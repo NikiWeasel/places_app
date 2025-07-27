@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:places_surf/common/data/dto/place_dto.dart';
+import 'package:places_surf/common/data/dto/search/response/place_search_response_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';
@@ -16,7 +17,7 @@ abstract class RestClient {
 
   /// Вызов метода `toJson()` см. в [SearchPlace.toJson]
   @GET('/places/search')
-  Future<List<PlaceDTO>> getPlacesBySearch(
+  Future<PlaceSearchResponseDTO> getPlacesBySearch(
     @Queries() Map<String, dynamic> queries,
   );
 }

@@ -1,5 +1,5 @@
 import 'package:places_surf/common/domain/entities/place.dart';
-import 'package:places_surf/common/domain/entities/search_place.dart';
+import 'package:places_surf/common/domain/entities/search_place_query.dart';
 
 abstract interface class IPlacesRepository {
   //TODO возможно стоит убрать Future
@@ -7,5 +7,5 @@ abstract interface class IPlacesRepository {
 
   Future<Place> getPlaceById(int id);
 
-  Future<List<Place>> getPlacesBySearch(SearchPlace searchPlace);
+  Future<List<Place>> getPlacesBySearch(SearchPlaceQuery searchPlace);
 }
