@@ -38,4 +38,7 @@ abstract class AppStrings {
   /// Заглушки
   static const favoritesStub = 'Избранное (заглушка)';
   static const settingsStub = 'Настройки (заглушка)';
+
+  /// TextInput
+  static const searchBar = 'Поиск по местам';
 }

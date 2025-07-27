@@ -25,7 +25,6 @@ class PlacesBloc extends Bloc<PlacesEvent, PlacesState> {
         )
         .listen((places) {
           add(_SearchResultsReceived(places));
-          print('\nLISTENER RESULTS\n');
         });
 
     on<FetchPlacesEvent>((event, emit) async {
