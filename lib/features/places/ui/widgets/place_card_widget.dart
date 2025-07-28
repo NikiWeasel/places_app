@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places_surf/common/data/dto/place_dto.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
+import 'package:places_surf/common/domain/entities/place_images.dart';
 import 'package:places_surf/features/place_details/ui/screens/place_details_screen.dart';
+import 'package:places_surf/features/places/bloc/places_bloc.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
 
@@ -18,6 +19,7 @@ class PlaceCardWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
+        //TODO исправить
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => PlaceDetailsScreen(place: place),
@@ -33,11 +35,31 @@ class PlaceCardWidget extends StatelessWidget {
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,
-
                 children: [
-                  if (place.urls.isNotEmpty)
-                    Image.network(fit: BoxFit.cover, place.urls.first),
+                  Builder(
+                    builder: (context) {
+                      final images = place.images;
 
+                      if (images is ImagesUrls) {
+                        if (images.urls.isEmpty) return const SizedBox();
+                        return Image.network(
+                          images.urls.first,
+                          fit: BoxFit.cover,
+                        );
+                      } else if (images is ImagesBytes) {
+                        if (images.images.isEmpty) return const SizedBox();
+                        return Image.memory(
+                          images.images.first,
+                          fit: BoxFit.cover,
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+
+                  // if (place.images.isNotEmpty)
+                  //   Image.network(fit: BoxFit.cover, place.images.first),
                   Positioned(
                     left: 16,
                     top: 16,
@@ -52,8 +74,18 @@ class PlaceCardWidget extends StatelessWidget {
                     top: 8,
                     right: 8,
                     child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.favorite_border, color: Colors.white),
+                      onPressed: () {
+                        context.read<PlacesBloc>().add(
+                          ToggleFavoritePlace(place: place),
+                        );
+                      },
+                      icon:
+                          place.isFavorite
+                              ? Icon(Icons.favorite, color: Colors.red)
+                              : Icon(
+                                Icons.favorite_border,
+                                color: Colors.white,
+                              ),
                     ),
                   ),
                 ],

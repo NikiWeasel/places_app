@@ -1,18 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:places_surf/app/rest_client.dart';
 import 'package:places_surf/common/data/repositories/places_repository.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
+import 'package:places_surf/features/favorites/data/api/local_places_database.dart';
+import 'package:places_surf/features/favorites/data/data_sources/drift_favorites_dao.dart';
+import 'package:places_surf/features/favorites/data/repositories/favorite_places_repository.dart';
+import 'package:places_surf/features/favorites/domain/repositories/i_favorite_places_repository.dart';
+import 'package:places_surf/features/places/data/api/rest_client.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupDI() async {
-  // SharedPreferences (инициализация async)
-  // final prefs = await SharedPreferences.getInstance();
-  // getIt.registerSingleton<SharedPreferences>(prefs);
-
   // Dio
   getIt.registerLazySingleton<Dio>(
     () => Dio(
@@ -24,19 +22,22 @@ Future<void> setupDI() async {
     ),
   );
 
+  // Drift
+  getIt.registerLazySingleton(() => LocalPlacesDatabase());
+
+  // Retrofit
   getIt.registerLazySingleton<RestClient>(() => RestClient(getIt<Dio>()));
 
-  getIt.registerLazySingleton<IPlacesRepository>(
-    () => PlacesRepository(getIt<RestClient>()),
+  getIt.registerLazySingleton<DriftFavoritesDAO>(
+    () =>
+        DriftFavoritesDAO(db: getIt<LocalPlacesDatabase>(), dio: getIt<Dio>()),
   );
 
-  // Services
-  // getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()));
-  // getIt.registerLazySingleton<StorageService>(
-  //   () => StorageServiceImpl(getIt()),
-  // );
-  // getIt.registerLazySingleton<AuthService>(() => AuthServiceImpl(getIt()));
-  //
-  // // BLoC
-  // getIt.registerFactory<AuthBloc>(() => AuthBloc(authService: getIt()));
+  getIt.registerLazySingleton<IPlacesRepository>(
+    () => PlacesRepository(getIt<RestClient>(), getIt<DriftFavoritesDAO>()),
+  );
+
+  getIt.registerLazySingleton<IFavoritePlacesRepository>(
+    () => FavoritePlacesRepository(getIt<DriftFavoritesDAO>()),
+  );
 }

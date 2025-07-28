@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:places_surf/app/di/app_dependencies.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
+import 'package:places_surf/features/favorites/bloc/favorite_places_bloc.dart';
+import 'package:places_surf/features/favorites/domain/repositories/i_favorite_places_repository.dart';
 import 'package:places_surf/features/places/bloc/places_bloc.dart';
 import 'package:places_surf/router/app_router.dart';
 import 'package:places_surf/uikit/themes/app_theme_data.dart';
-import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
   const App({super.key, required this.appRouter});
@@ -18,9 +19,17 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<PlacesBloc>(
           create:
+              (context) => PlacesBloc(
+                getIt<IPlacesRepository>(),
+                getIt<IFavoritePlacesRepository>(),
+              )..add(FetchPlacesEvent()),
+        ),
+        BlocProvider<FavoritePlacesBloc>(
+          create:
               (context) =>
-                  PlacesBloc(getIt<IPlacesRepository>())
-                    ..add(FetchPlacesEvent()),
+                  FavoritePlacesBloc(getIt<IFavoritePlacesRepository>())
+                    ..add(FetchFavoritePlacesEvent())
+                    ..add(StartFavoritePlacesWatch()),
         ),
       ],
       child: MaterialApp.router(

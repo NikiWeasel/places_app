@@ -10,7 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:flutter/cupertino.dart' as _i8;
+import 'package:flutter/material.dart' as _i8;
 import 'package:places_surf/common/domain/entities/place.dart' as _i9;
 import 'package:places_surf/features/favorites/ui/screens/favorites_screen.dart'
     as _i1;

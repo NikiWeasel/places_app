@@ -16,3 +16,9 @@ class _SearchResultsReceived extends PlacesEvent {
 
   _SearchResultsReceived(this.places);
 }
+
+class ToggleFavoritePlace extends PlacesEvent {
+  final Place place;
+
+  ToggleFavoritePlace({required this.place});
+}

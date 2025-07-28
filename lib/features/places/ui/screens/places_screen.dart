@@ -36,7 +36,9 @@ class PlacesScreen extends StatelessWidget {
     return BlocBuilder<PlacesBloc, PlacesState>(
       builder: (context, placesState) {
         return Scaffold(
-          appBar: AppBar(title: Center(child: Text('Surf Places'))),
+          appBar: AppBar(
+            title: Center(child: Text(AppStrings.placesScreenAppBarTitle)),
+          ),
           body: Column(
             children: [
               Padding(
@@ -62,7 +64,7 @@ class PlacesScreen extends StatelessWidget {
                 ),
                 ErrorPlacesState() => Center(
                   child: Text(
-                    'Ошибка ${placesState.msg}',
+                    '${AppStrings.placesError} ${placesState.msg}',
                     style: appTextTheme.title.copyWith(
                       color: appColorTheme.error,
                     ),

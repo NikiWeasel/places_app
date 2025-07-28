@@ -1,12 +1,8 @@
 import 'package:auto_route/annotations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places_surf/common/data/dto/place_dto.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/features/place_details/ui/widgets/place_detail_content_widget.dart';
 import 'package:places_surf/features/place_details/ui/widgets/places_detail_photo_slider_widget.dart';
-import 'package:places_surf/uikit/buttons/main_button.dart';
-import 'package:places_surf/uikit/buttons/text_button_widget.dart';
 
 @RoutePage()
 class PlaceDetailsScreen extends StatelessWidget {
@@ -23,7 +19,9 @@ class PlaceDetailsScreen extends StatelessWidget {
             automaticallyImplyLeading: false,
             expandedHeight: 360,
 
-            flexibleSpace: PlacesDetailPhotoSliderWidget(images: place.urls),
+            flexibleSpace: PlacesDetailPhotoSliderWidget(
+              placeImages: place.images,
+            ),
           ),
           SliverList(
             delegate: SliverChildListDelegate([

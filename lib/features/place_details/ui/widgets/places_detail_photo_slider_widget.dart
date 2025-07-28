@@ -1,42 +1,66 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:typed_data';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:places_surf/common/domain/entities/place_images.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 
 class PlacesDetailPhotoSliderWidget extends StatelessWidget {
-  const PlacesDetailPhotoSliderWidget({super.key, required this.images});
+  const PlacesDetailPhotoSliderWidget({super.key, required this.placeImages});
 
-  final List<String> images;
+  final PlaceImages placeImages;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = AppColorTheme.light();
     return Stack(
       children: [
-        PageView.builder(
-          itemCount: images.length,
-          itemBuilder:
-              (context, index) =>
-              Image.network(
-                images[index],
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
+        Builder(
+          builder: (context) {
+            if (placeImages is ImagesUrls) {
+              final List<String> images = (placeImages as ImagesUrls).urls;
 
-                  final total = loadingProgress.expectedTotalBytes;
-                  final loaded = loadingProgress.cumulativeBytesLoaded;
-
-                  return Container(
-                    color: colorScheme.secondary,
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(
-                      value: total != null ? loaded / total : null,
+              return PageView.builder(
+                itemCount: images.length,
+                itemBuilder:
+                    (context, index) => CachedNetworkImage(
+                      imageUrl: images[index],
+                      fit: BoxFit.cover,
+                      progressIndicatorBuilder: (
+                        context,
+                        url,
+                        downloadProgress,
+                      ) {
+                        final progress = downloadProgress.progress;
+                        return Container(
+                          color: colorScheme.secondary,
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(value: progress),
+                        );
+                      },
+                      errorWidget:
+                          (context, url, error) =>
+                              Container(color: Colors.white),
                     ),
-                  );
-                },
-                errorBuilder:
-                    (context, error, stackTrace) =>
-                    Container(color: Colors.white),
-              ),
+              );
+            } else if (placeImages is ImagesBytes) {
+              final List<Uint8List> images =
+                  (placeImages as ImagesBytes).images;
+
+              return PageView.builder(
+                itemCount: images.length,
+                itemBuilder:
+                    (context, index) => Image.memory(
+                      images[index],
+                      fit: BoxFit.cover,
+                      errorBuilder:
+                          (context, error, stackTrace) =>
+                              Container(color: Colors.white),
+                    ),
+              );
+            }
+            return SizedBox();
+          },
         ),
         Positioned(
           top: 50,

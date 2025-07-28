@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
+import 'package:places_surf/common/domain/entities/place_images.dart';
 
 part 'place_dto.g.dart';
 
@@ -28,25 +29,26 @@ class PlaceDTO {
 
   Map<String, dynamic> toJson() => _$PlaceDTOToJson(this);
 
-  Place toEntity() => Place(
+  Place toEntity(bool isFavorite) => Place(
     id: id,
     name: name,
     lat: lat,
     lng: lng,
     description: description,
     type: typeConverter(type),
-    urls: urls,
+    images: ImagesUrls(urls),
+    isFavorite: isFavorite,
   );
 
-  static PlaceDTO fromEntity(Place place) => PlaceDTO(
-    id: place.id,
-    name: place.name,
-    lat: place.lat,
-    lng: place.lng,
-    description: place.description,
-    type: place.type.name,
-    urls: place.urls,
-  );
+  // static PlaceDTO fromEntity(Place place) => PlaceDTO(
+  //   id: place.id,
+  //   name: place.name,
+  //   lat: place.lat,
+  //   lng: place.lng,
+  //   description: place.description,
+  //   type: place.type.name,
+  //   urls: place.images.urls,
+  // );
 }
 
 //TODO Поменять наверное

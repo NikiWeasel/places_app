@@ -21,6 +21,10 @@ abstract class AppStrings {
   static const placesScreenBottomNavFavorites = 'Избранное';
   static const placesScreenBottomNavSettings = 'Настройки';
 
+  /// Избранное
+  static const favoritePlacesScreenEmpty = 'Пока ничего не сохранено';
+  static const favoritePlacesScreenRefresh = 'Обновить';
+
   /// Детали места.
   static const placeDetailsRouteButton = 'ПОСТРОИТЬ МАРШРУТ';
   static const placeDetailsFavoritesButton = 'В Избранное';
