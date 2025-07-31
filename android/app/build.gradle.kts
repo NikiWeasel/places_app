@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.places_surf"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

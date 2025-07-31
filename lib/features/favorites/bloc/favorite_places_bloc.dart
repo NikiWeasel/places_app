@@ -6,6 +6,7 @@ import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/features/favorites/domain/repositories/i_favorite_places_repository.dart';
 
 part 'favorite_places_event.dart';
+
 part 'favorite_places_state.dart';
 
 class FavoritePlacesBloc
@@ -33,8 +34,8 @@ class FavoritePlacesBloc
     });
 
     on<FetchFavoritePlacesEvent>((event, emit) async {
+      emit(LoadingFavoritePlacesState());
       try {
-        emit(LoadingFavoritePlacesState());
         _localPlaces = await _favoriteRepository.getFavoritePlaces();
         emit(LoadedFavoritePlacesState(places: _localPlaces));
       } catch (e) {

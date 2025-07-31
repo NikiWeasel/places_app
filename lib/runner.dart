@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:places_surf/app/app.dart';
 import 'package:places_surf/app/di/app_dependencies.dart';
 import 'package:places_surf/router/app_router.dart';
 import 'package:yandex_maps_mapkit/init.dart' as init;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> run() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +13,7 @@ Future<void> run() async {
   await init.initMapkit(apiKey: mapsKey);
   AppRouter appRouter = AppRouter();
 
-  await setupDI();
+  await setupDI(useMocks: true);
 
   runApp(App(appRouter: appRouter));
 }

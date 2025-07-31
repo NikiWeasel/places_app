@@ -1,11 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/entities/place_images.dart';
-import 'package:places_surf/features/place_details/ui/screens/place_details_screen.dart';
 import 'package:places_surf/features/places/bloc/places_bloc.dart';
+import 'package:places_surf/router/app_router.gr.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
+import 'package:yandex_maps_mapkit/mapkit.dart' as ymk;
 
 class PlaceCardWidget extends StatelessWidget {
   const PlaceCardWidget({super.key, required this.place});
@@ -17,15 +19,17 @@ class PlaceCardWidget extends StatelessWidget {
     final textTheme = AppTextTheme.of(context);
     final colorTheme = AppColorTheme.of(context);
 
+    Future<void> pushDetailsScreen() async {
+      final result = await context.pushRoute(PlaceDetailsRoute(place: place));
+      if (result != null) {
+        final tabsRouter = AutoTabsRouter.of(context);
+        // tabsRouter.setActiveIndex(1); // Переход к MapRoute
+        context.navigateTo(MapRoute(point: (result as ymk.Point?)));
+      }
+    }
+
     return InkWell(
-      onTap: () {
-        //TODO исправить
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => PlaceDetailsScreen(place: place),
-          ),
-        );
-      },
+      onTap: pushDetailsScreen,
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Column(

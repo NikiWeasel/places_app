@@ -75,9 +75,6 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
     // Для каждой записи подтягиваем связанные изображения
     final List<Place> result = [];
 
-    final placeRows1 = await _db.select(_db.placeImages).get();
-    print(placeRows1);
-
     for (final placeRow in placeRows) {
       final imageRows =
           await (_db.select(_db.placeImages)

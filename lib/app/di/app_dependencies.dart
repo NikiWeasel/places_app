@@ -6,11 +6,17 @@ import 'package:places_surf/features/favorites/data/api/local_places_database.da
 import 'package:places_surf/features/favorites/data/data_sources/drift_favorites_dao.dart';
 import 'package:places_surf/features/favorites/data/repositories/favorite_places_repository.dart';
 import 'package:places_surf/features/favorites/domain/repositories/i_favorite_places_repository.dart';
+import 'package:places_surf/features/map/data/repositories/map_repository.dart';
+import 'package:places_surf/features/map/data/services/geolocation_service.dart';
+import 'package:places_surf/features/map/data/services/map_service.dart';
+import 'package:places_surf/features/map/domain/repositories/i_map_repository.dart';
+import 'package:places_surf/features/map/domain/services/i_geolocation_service.dart';
 import 'package:places_surf/features/places/data/api/rest_client.dart';
+import 'package:places_surf/test_mocks/geolocation_service_mock.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> setupDI() async {
+Future<void> setupDI({required bool useMocks}) async {
   // Dio
   getIt.registerLazySingleton<Dio>(
     () => Dio(
@@ -33,11 +39,29 @@ Future<void> setupDI() async {
         DriftFavoritesDAO(db: getIt<LocalPlacesDatabase>(), dio: getIt<Dio>()),
   );
 
+  if (useMocks) {
+    getIt.registerLazySingleton<IGeolocationService>(
+      () => GeolocationServiceMock(),
+    );
+  } else {
+    getIt.registerLazySingleton<IGeolocationService>(
+      () => GeolocationService(),
+    );
+  }
+
+  getIt.registerLazySingleton<MapService>(() => MapService(null));
+
+  //repositories
+
   getIt.registerLazySingleton<IPlacesRepository>(
     () => PlacesRepository(getIt<RestClient>(), getIt<DriftFavoritesDAO>()),
   );
 
   getIt.registerLazySingleton<IFavoritePlacesRepository>(
     () => FavoritePlacesRepository(getIt<DriftFavoritesDAO>()),
+  );
+
+  getIt.registerLazySingleton<IMapRepository>(
+    () => MapRepository(getIt<IGeolocationService>(), getIt<MapService>()),
   );
 }

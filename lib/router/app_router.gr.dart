@@ -11,7 +11,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i7;
 import 'package:flutter/material.dart' as _i8;
-import 'package:places_surf/common/domain/entities/place.dart' as _i9;
+import 'package:places_surf/common/domain/entities/place.dart' as _i10;
 import 'package:places_surf/features/favorites/ui/screens/favorites_screen.dart'
     as _i1;
 import 'package:places_surf/features/map/ui/screens/map_screen.dart' as _i2;
@@ -22,6 +22,7 @@ import 'package:places_surf/features/places/ui/screens/places_screen.dart'
 import 'package:places_surf/features/settings/ui/screens/settings_screen.dart'
     as _i6;
 import 'package:places_surf/router/ui/root_screen.dart' as _i5;
+import 'package:yandex_maps_mapkit/mapkit.dart' as _i9;
 
 /// generated route for
 /// [_i1.FavoritesScreen]
@@ -41,18 +42,49 @@ class FavoritesRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.MapScreen]
-class MapRoute extends _i7.PageRouteInfo<void> {
-  const MapRoute({List<_i7.PageRouteInfo>? children})
-    : super(MapRoute.name, initialChildren: children);
+class MapRoute extends _i7.PageRouteInfo<MapRouteArgs> {
+  MapRoute({
+    _i8.Key? key,
+    required _i9.Point? point,
+    List<_i7.PageRouteInfo>? children,
+  }) : super(
+         MapRoute.name,
+         args: MapRouteArgs(key: key, point: point),
+         initialChildren: children,
+       );
 
   static const String name = 'MapRoute';
 
   static _i7.PageInfo page = _i7.PageInfo(
     name,
     builder: (data) {
-      return const _i2.MapScreen();
+      final args = data.argsAs<MapRouteArgs>();
+      return _i2.MapScreen(key: args.key, point: args.point);
     },
   );
+}
+
+class MapRouteArgs {
+  const MapRouteArgs({this.key, required this.point});
+
+  final _i8.Key? key;
+
+  final _i9.Point? point;
+
+  @override
+  String toString() {
+    return 'MapRouteArgs{key: $key, point: $point}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! MapRouteArgs) return false;
+    return key == other.key && point == other.point;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ point.hashCode;
 }
 
 /// generated route for
@@ -60,7 +92,7 @@ class MapRoute extends _i7.PageRouteInfo<void> {
 class PlaceDetailsRoute extends _i7.PageRouteInfo<PlaceDetailsRouteArgs> {
   PlaceDetailsRoute({
     _i8.Key? key,
-    required _i9.Place place,
+    required _i10.Place place,
     List<_i7.PageRouteInfo>? children,
   }) : super(
          PlaceDetailsRoute.name,
@@ -84,7 +116,7 @@ class PlaceDetailsRouteArgs {
 
   final _i8.Key? key;
 
-  final _i9.Place place;
+  final _i10.Place place;
 
   @override
   String toString() {

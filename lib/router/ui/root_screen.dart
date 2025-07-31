@@ -1,6 +1,4 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places_surf/assets/strings/app_strings.dart';
 import 'package:places_surf/router/app_router.gr.dart';
@@ -13,11 +11,11 @@ class RootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-      routes: const [
-        PlacesRoute(),
-        MapRoute(),
-        FavoritesRoute(),
-        SettingsRoute(),
+      routes: [
+        const PlacesRoute(),
+        MapRoute(point: null),
+        const FavoritesRoute(),
+        const SettingsRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         final colorTheme = AppColorTheme.of(context);

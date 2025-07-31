@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:places_surf/router/app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
@@ -18,5 +17,6 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: SettingsRoute.page),
       ],
     ),
+    AutoRoute(page: PlaceDetailsRoute.page),
   ];
 }

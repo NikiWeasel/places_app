@@ -1,8 +1,12 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:places_surf/assets/strings/app_strings.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/features/place_details/ui/widgets/place_detail_content_widget.dart';
 import 'package:places_surf/features/place_details/ui/widgets/places_detail_photo_slider_widget.dart';
+import 'package:places_surf/features/places/bloc/places_bloc.dart';
+import 'package:yandex_maps_mapkit/mapkit.dart';
 
 @RoutePage()
 class PlaceDetailsScreen extends StatelessWidget {
@@ -12,6 +16,14 @@ class PlaceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void openMap() {
+      context.router.pop(Point(latitude: place.lat, longitude: place.lng));
+    }
+
+    void toFavorites() {
+      context.read<PlacesBloc>().add(ToggleFavoritePlace(place: place));
+    }
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -35,13 +47,16 @@ class PlaceDetailsScreen extends StatelessWidget {
               // TextButtonWidget(title: 'title', onPressed: () {}),
               ElevatedButton.icon(
                 icon: Icon(Icons.route),
-                label: Text('Построить маршрут'),
-                onPressed: () {},
+                label: Text(AppStrings.placeDetailsRouteButton),
+                onPressed: openMap,
               ),
               const SizedBox(height: 24),
               Divider(indent: 16, endIndent: 16),
               const SizedBox(height: 8),
-              TextButton.icon(onPressed: () {}, label: Text('В Избранное')),
+              TextButton.icon(
+                onPressed: toFavorites,
+                label: Text(AppStrings.placeDetailsFavoritesButton),
+              ),
             ]),
           ),
         ],
