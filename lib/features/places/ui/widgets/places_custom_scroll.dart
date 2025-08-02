@@ -26,6 +26,7 @@ class _PlacesCustomScrollState extends State<PlacesCustomScroll> {
 
   Future<void> _onRefresh() async {
     setState(() => isLoading = true);
+    await Future.delayed(Duration(milliseconds: 500));
     await widget.onRefresh();
     setState(() {
       isLoading = false;

@@ -24,7 +24,7 @@ class PlacesRepository implements IPlacesRepository {
   @override
   Future<List<Place>> getPlaces() async {
     final placesDTO = await _restClient.getPlaces();
-    final localPlaces = await _driftFavoritesDAO.getAllPlaces();
+    final localPlaces = await _driftFavoritesDAO.getFavoritePlaces();
 
     List<Place> entities =
         placesDTO
@@ -56,5 +56,13 @@ class PlacesRepository implements IPlacesRepository {
             .toList();
 
     return entities;
+  }
+
+  @override
+  Future<List<Place>> getFavoritePlaces() async {
+    final places = await getPlaces();
+    var favPlaces = places.where((element) => element.isFavorite).toList();
+    print(favPlaces);
+    return favPlaces;
   }
 }

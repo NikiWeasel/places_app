@@ -7,11 +7,17 @@ abstract interface class ILocalPlacesDatabaseService {
 
   Future<List<Place>> getAllPlaces();
 
+  Future<List<Place>> getFavoritePlaces();
+
   Future<Place?> getPlaceById(int id);
 
   // Для PlacesBloc
-  Stream<List<Place>> watchPlaces();
+  Stream<List<Place>> watchFavoritePlaces();
 
   // Для FavoritePlacesBloc
-  Stream<List<int>> watchPlacesIds();
+  Stream<List<int>> watchFavoritePlacesIds();
+
+  Future<void> updatePlace(Place place);
+
+  Future<void> savePlaces(List<Place> places);
 }

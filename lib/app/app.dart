@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:places_surf/app/di/app_dependencies.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
 import 'package:places_surf/features/favorites/bloc/favorite_places_bloc.dart';
-import 'package:places_surf/features/favorites/domain/repositories/i_favorite_places_repository.dart';
+import 'package:places_surf/features/favorites/domain/repositories/i_saved_places_repository.dart';
 import 'package:places_surf/features/map/bloc/map_bloc.dart';
 import 'package:places_surf/features/map/data/services/map_service.dart';
 import 'package:places_surf/features/map/domain/repositories/i_map_repository.dart';
@@ -24,13 +24,16 @@ class App extends StatelessWidget {
           create:
               (context) => PlacesBloc(
                 getIt<IPlacesRepository>(),
-                getIt<IFavoritePlacesRepository>(),
+                getIt<ISavedPlacesRepository>(),
               )..add(FetchPlacesEvent()),
         ),
         BlocProvider<FavoritePlacesBloc>(
           create:
               (context) =>
-                  FavoritePlacesBloc(getIt<IFavoritePlacesRepository>())
+                  FavoritePlacesBloc(
+                      getIt<ISavedPlacesRepository>(),
+                      getIt<IPlacesRepository>(),
+                    )
                     ..add(FetchFavoritePlacesEvent())
                     ..add(StartFavoritePlacesWatch()),
         ),

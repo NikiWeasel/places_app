@@ -4,8 +4,8 @@ import 'package:places_surf/common/data/repositories/places_repository.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
 import 'package:places_surf/features/favorites/data/api/local_places_database.dart';
 import 'package:places_surf/features/favorites/data/data_sources/drift_favorites_dao.dart';
-import 'package:places_surf/features/favorites/data/repositories/favorite_places_repository.dart';
-import 'package:places_surf/features/favorites/domain/repositories/i_favorite_places_repository.dart';
+import 'package:places_surf/features/favorites/data/repositories/saved_places_repository.dart';
+import 'package:places_surf/features/favorites/domain/repositories/i_saved_places_repository.dart';
 import 'package:places_surf/features/map/data/repositories/map_repository.dart';
 import 'package:places_surf/features/map/data/services/geolocation_service.dart';
 import 'package:places_surf/features/map/data/services/map_service.dart';
@@ -57,8 +57,8 @@ Future<void> setupDI({required bool useMocks}) async {
     () => PlacesRepository(getIt<RestClient>(), getIt<DriftFavoritesDAO>()),
   );
 
-  getIt.registerLazySingleton<IFavoritePlacesRepository>(
-    () => FavoritePlacesRepository(getIt<DriftFavoritesDAO>()),
+  getIt.registerLazySingleton<ISavedPlacesRepository>(
+    () => SavedPlacesRepository(getIt<DriftFavoritesDAO>()),
   );
 
   getIt.registerLazySingleton<IMapRepository>(

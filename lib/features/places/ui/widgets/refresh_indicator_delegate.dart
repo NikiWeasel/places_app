@@ -17,7 +17,8 @@ class RefreshIndicatorDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => isLoading ? maxHeight : 0;
 
   @override
-  double get maxExtent => isLoading ? maxHeight : 0;
+  double get maxExtent =>
+      isLoading ? maxHeight : dragOffset.clamp(0.0, maxHeight);
 
   @override
   Widget build(
@@ -29,7 +30,8 @@ class RefreshIndicatorDelegate extends SliverPersistentHeaderDelegate {
       return const SizedBox.shrink();
     }
 
-    double opacity = isLoading ? 1.0 : (dragOffset / maxHeight).clamp(0.0, 1.0);
+    final double opacity =
+        isLoading ? 1.0 : (dragOffset / maxHeight).clamp(0.0, 1.0);
 
     return SizedBox(
       height: maxHeight,

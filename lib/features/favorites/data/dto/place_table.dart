@@ -5,6 +5,8 @@ class PlaceTable extends Table {
 
   TextColumn get name => text()();
 
+  BoolColumn get isFavorite => boolean()();
+
   RealColumn get lat => real()();
 
   RealColumn get lng => real()();
@@ -13,4 +15,7 @@ class PlaceTable extends Table {
 
   // enum → сохраняем как текст
   TextColumn get type => text()(); // Можно использовать enumName
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

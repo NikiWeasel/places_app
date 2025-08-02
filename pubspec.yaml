@@ -22,6 +22,7 @@ dependencies:
   get_it: ^8.0.3
   path_provider: ^2.1.5
   permission_handler: ^12.0.1
+  pool: ^1.5.1
   retrofit: ^4.6.0
   rxdart: ^0.28.0
   yandex_maps_mapkit: ^4.18.0-beta

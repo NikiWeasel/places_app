@@ -121,10 +121,10 @@ class PlaceCardWidget extends StatelessWidget {
                   Text(
                     place.name,
                     style: textTheme.subtitle,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 2.h),
+                  // SizedBox(height: 2.h),
                   Text(
                     place.description,
                     softWrap: true,

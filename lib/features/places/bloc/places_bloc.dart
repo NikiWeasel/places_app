@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/entities/search_place_query.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
-import 'package:places_surf/features/favorites/domain/repositories/i_favorite_places_repository.dart';
+import 'package:places_surf/features/favorites/domain/repositories/i_saved_places_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'places_event.dart';
@@ -13,13 +14,14 @@ part 'places_state.dart';
 
 class PlacesBloc extends Bloc<PlacesEvent, PlacesState> {
   final IPlacesRepository _placeRepository;
-  final IFavoritePlacesRepository _favoriteRepository;
+  final ISavedPlacesRepository _savedPlacesRepository;
+
   final BehaviorSubject<SearchPlaceQuery> _querySubject =
       BehaviorSubject<SearchPlaceQuery>();
   StreamSubscription<List<Place>>? _subscription;
   List<Place> _places = [];
 
-  PlacesBloc(this._placeRepository, this._favoriteRepository)
+  PlacesBloc(this._placeRepository, this._savedPlacesRepository)
     : super(PlacesInitial()) {
     _subscription = _querySubject
         .debounceTime(const Duration(milliseconds: 500))
@@ -36,8 +38,13 @@ class PlacesBloc extends Bloc<PlacesEvent, PlacesState> {
       try {
         emit(LoadingPlacesState());
         _places = await _placeRepository.getPlaces();
+        _savedPlacesRepository.savePlaces(_places);
+        emit(LoadedPlacesState(places: _places));
+      } on DioException catch (e) {
+        _places = await _savedPlacesRepository.getSavedPlaces();
         emit(LoadedPlacesState(places: _places));
       } catch (e) {
+        print(e.toString());
         emit(ErrorPlacesState(msg: e.toString()));
       }
     });
@@ -53,8 +60,9 @@ class PlacesBloc extends Bloc<PlacesEvent, PlacesState> {
       emit(LoadedPlacesState(places: _places));
     });
 
+    //TODO убрать в другой блок наверное
     on<ToggleFavoritePlace>((event, emit) {
-      _favoriteRepository.toggleFavorite(event.place);
+      _savedPlacesRepository.toggleFavorite(event.place);
       final newPlaces =
           _places.map((element) {
             if (element.id == event.place.id) {

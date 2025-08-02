@@ -86,8 +86,6 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('widget.point');
-    print(widget.point);
     final appTextTheme = AppTextTheme.of(context);
     final appColorTheme = AppColorTheme.of(context);
 
