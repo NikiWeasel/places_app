@@ -32,9 +32,28 @@ class GeolocationServiceMock implements IGeolocationService {
 
   @override
   Future<Point> getCurrentPosition() async {
+    //TODO удалить
+    await ensurePermissionGranted();
+
     final position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
     return Point(latitude: 55.7749, longitude: 37.6321);
+  }
+
+  @override
+  double measureDistance(Point first, Point second) {
+    final point = Point(latitude: 55.7749, longitude: 37.6321);
+    final dis =
+        Geolocator.distanceBetween(
+          point.latitude,
+          point.longitude,
+          second.latitude,
+          second.longitude,
+        ) /
+        1000;
+    // print('dis');
+    // print(dis);
+    return dis;
   }
 }

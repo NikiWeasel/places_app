@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/entities/search_place_query.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
 import 'package:places_surf/features/favorites/domain/repositories/i_saved_places_repository.dart';
+import 'package:places_surf/features/places/domain/repositories/i_categories_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'places_event.dart';
@@ -15,17 +16,24 @@ part 'places_state.dart';
 class PlacesBloc extends Bloc<PlacesEvent, PlacesState> {
   final IPlacesRepository _placeRepository;
   final ISavedPlacesRepository _savedPlacesRepository;
+  final ICategoriesRepository _categoriesRepository;
 
   final BehaviorSubject<SearchPlaceQuery> _querySubject =
       BehaviorSubject<SearchPlaceQuery>();
   StreamSubscription<List<Place>>? _subscription;
   List<Place> _places = [];
 
-  PlacesBloc(this._placeRepository, this._savedPlacesRepository)
-    : super(PlacesInitial()) {
+  static const int minLength = 3;
+
+  PlacesBloc(
+    this._placeRepository,
+    this._savedPlacesRepository,
+    this._categoriesRepository,
+  ) : super(PlacesInitial()) {
     _subscription = _querySubject
         .debounceTime(const Duration(milliseconds: 500))
         .distinct()
+        .where((query) => query.query.length >= minLength)
         .switchMap<List<Place>>(
           (query) =>
               Stream.fromFuture(_placeRepository.getPlacesBySearch(query)),
@@ -72,6 +80,14 @@ class PlacesBloc extends Bloc<PlacesEvent, PlacesState> {
           }).toList();
       _places = newPlaces;
       emit(LoadedPlacesState(places: _places));
+    });
+
+    on<ResetPlacesEvent>((event, emit) async {
+      emit(LoadedPlacesState(places: _places));
+    });
+
+    on<SetFilteredPlaces>((event, emit) async {
+      emit(LoadedPlacesState(places: event.places));
     });
   }
 }

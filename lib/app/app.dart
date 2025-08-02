@@ -7,7 +7,9 @@ import 'package:places_surf/features/favorites/domain/repositories/i_saved_place
 import 'package:places_surf/features/map/bloc/map_bloc.dart';
 import 'package:places_surf/features/map/data/services/map_service.dart';
 import 'package:places_surf/features/map/domain/repositories/i_map_repository.dart';
-import 'package:places_surf/features/places/bloc/places_bloc.dart';
+import 'package:places_surf/features/places/bloc_categories/categories_bloc.dart';
+import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
+import 'package:places_surf/features/places/domain/repositories/i_categories_repository.dart';
 import 'package:places_surf/router/app_router.dart';
 import 'package:places_surf/uikit/themes/app_theme_data.dart';
 
@@ -25,6 +27,7 @@ class App extends StatelessWidget {
               (context) => PlacesBloc(
                 getIt<IPlacesRepository>(),
                 getIt<ISavedPlacesRepository>(),
+                getIt<ICategoriesRepository>(),
               )..add(FetchPlacesEvent()),
         ),
         BlocProvider<FavoritePlacesBloc>(
@@ -42,6 +45,12 @@ class App extends StatelessWidget {
               (context) =>
                   MapBloc(getIt<IMapRepository>(), getIt<MapService>())
                     ..add(ToDefaultPointMapEvent()),
+        ),
+        BlocProvider<CategoriesBloc>(
+          create:
+              (context) =>
+                  CategoriesBloc(getIt<ICategoriesRepository>())
+                    ..add(ResetFilters()),
         ),
       ],
       child: MaterialApp.router(

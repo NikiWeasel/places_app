@@ -62,7 +62,7 @@ class PlacesRepository implements IPlacesRepository {
   Future<List<Place>> getFavoritePlaces() async {
     final places = await getPlaces();
     var favPlaces = places.where((element) => element.isFavorite).toList();
-    print(favPlaces);
+    // print(favPlaces);
     return favPlaces;
   }
 }

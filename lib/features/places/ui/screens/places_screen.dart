@@ -5,10 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/assets/images/app_svg_icons.dart';
 import 'package:places_surf/assets/strings/app_strings.dart';
 import 'package:places_surf/common/domain/entities/search_place_query.dart';
-import 'package:places_surf/features/places/bloc/places_bloc.dart';
+import 'package:places_surf/common/ui/widgets/empty_screen_widget.dart';
+import 'package:places_surf/common/ui/widgets/error_screen_widget.dart';
+import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
 import 'package:places_surf/features/places/ui/widgets/places_custom_scroll.dart';
 import 'package:places_surf/router/app_router.gr.dart';
+import 'package:places_surf/uikit/buttons/icon_action_button.dart';
 import 'package:places_surf/uikit/images/svg_picture_widget.dart';
+import 'package:places_surf/uikit/loading/large_progress_indicator.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/input/app_text_field.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
@@ -23,6 +27,7 @@ class PlacesScreen extends StatelessWidget {
     final appColorTheme = AppColorTheme.of(context);
 
     final double screenHeight = MediaQuery.of(context).size.height;
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     void openFiltersScreen() {
       context.pushRoute(FilterRoute());
@@ -41,6 +46,7 @@ class PlacesScreen extends StatelessWidget {
       context.read<PlacesBloc>().add(SearchQueryChanged(sp));
     }
 
+    print(keyboardHeight);
     return BlocBuilder<PlacesBloc, PlacesState>(
       builder: (context, placesState) {
         return Scaffold(
@@ -61,39 +67,38 @@ class PlacesScreen extends StatelessWidget {
                     width: 24.w,
                     height: 24.h,
                   ),
-                  suffixIcon: IconButton(
+                  suffixIcon: IconActionButton(
                     onPressed: openFiltersScreen,
-                    icon: SvgPictureWidget(
-                      AppSvgIcons.icFilter,
-                      color: appColorTheme.accent,
-                    ),
+                    color: appColorTheme.accent,
+                    svgPath: AppSvgIcons.icFilter,
                   ),
                 ),
               ),
               //TODO Устранить повторения
               switch (placesState) {
-                PlacesInitial() => Padding(
-                  padding: EdgeInsets.only(top: screenHeight / 2 - 100),
-                  child: Center(child: CircularProgressIndicator()),
+                PlacesInitial() => Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: screenHeight - 220.h - 400),
+                    child: Center(child: LargeProgressIndicator()),
+                  ),
                 ),
                 LoadingPlacesState() => Padding(
-                  padding: EdgeInsets.only(top: screenHeight / 2 - 100),
-                  child: Center(child: CircularProgressIndicator()),
+                  padding: EdgeInsets.only(top: screenHeight - 220.h - 400),
+                  child: Center(child: LargeProgressIndicator()),
                 ),
-                ErrorPlacesState() => Center(
-                  child: Text(
-                    '${AppStrings.placesError} ${placesState.msg}',
-                    style: appTextTheme.title.copyWith(
-                      color: appColorTheme.error,
-                    ),
-                  ),
-                ),
-                LoadedPlacesState() => Flexible(
-                  child: PlacesCustomScroll(
-                    places: placesState.places,
-                    onRefresh: refresh,
-                  ),
-                ),
+                ErrorPlacesState() => ErrorScreenWidget(),
+                LoadedPlacesState() =>
+                  placesState.places.isNotEmpty
+                      ? Flexible(
+                        child: PlacesCustomScroll(
+                          places: placesState.places,
+                          onRefresh: refresh,
+                        ),
+                      )
+                      : SizedBox(
+                        height: screenHeight - 220.h,
+                        child: EmptyScreenWidget(onRefresh: () {}),
+                      ),
               },
             ],
           ),

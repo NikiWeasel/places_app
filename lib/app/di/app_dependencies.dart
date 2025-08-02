@@ -12,6 +12,8 @@ import 'package:places_surf/features/map/data/services/map_service.dart';
 import 'package:places_surf/features/map/domain/repositories/i_map_repository.dart';
 import 'package:places_surf/features/map/domain/services/i_geolocation_service.dart';
 import 'package:places_surf/features/places/data/api/rest_client.dart';
+import 'package:places_surf/features/places/data/repositories/categories_repository.dart';
+import 'package:places_surf/features/places/domain/repositories/i_categories_repository.dart';
 import 'package:places_surf/test_mocks/geolocation_service_mock.dart';
 
 final getIt = GetIt.instance;
@@ -63,5 +65,9 @@ Future<void> setupDI({required bool useMocks}) async {
 
   getIt.registerLazySingleton<IMapRepository>(
     () => MapRepository(getIt<IGeolocationService>(), getIt<MapService>()),
+  );
+
+  getIt.registerLazySingleton<ICategoriesRepository>(
+    () => CategoriesRepository(getIt<IGeolocationService>()),
   );
 }

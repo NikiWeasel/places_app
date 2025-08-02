@@ -37,4 +37,17 @@ class GeolocationService implements IGeolocationService {
     );
     return Point(latitude: position.latitude, longitude: position.longitude);
   }
+
+  @override
+  double measureDistance(Point first, Point second) {
+    final dis =
+        Geolocator.distanceBetween(
+          first.latitude,
+          first.longitude,
+          second.latitude,
+          second.longitude,
+        ) /
+        1000;
+    return dis;
+  }
 }

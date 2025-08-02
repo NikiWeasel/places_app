@@ -5,6 +5,7 @@ import 'package:places_surf/app/di/app_dependencies.dart';
 import 'package:places_surf/assets/strings/app_strings.dart';
 import 'package:places_surf/features/map/bloc/map_bloc.dart';
 import 'package:places_surf/features/map/data/services/map_service.dart';
+import 'package:places_surf/uikit/loading/large_progress_indicator.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart';
@@ -101,8 +102,8 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ),
           body: switch (state) {
-            MapInitial() => Center(child: CircularProgressIndicator()),
-            MapLoading() => Center(child: CircularProgressIndicator()),
+            MapInitial() => Center(child: LargeProgressIndicator()),
+            MapLoading() => Center(child: LargeProgressIndicator()),
             MapLoaded() => YandexMap(
               onMapCreated: (mapWindow) {
                 final controller = getIt<MapService>();

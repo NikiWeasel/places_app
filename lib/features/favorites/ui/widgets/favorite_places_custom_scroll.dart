@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
+import 'package:places_surf/features/favorites/ui/widgets/dismiss_container.dart';
+import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
 import 'package:places_surf/features/places/ui/widgets/place_card_widget.dart';
 import 'package:places_surf/features/places/ui/widgets/refresh_indicator_delegate.dart';
 
-class PlacesCustomScroll extends StatefulWidget {
-  const PlacesCustomScroll({
+class FavoriteCustomScroll extends StatefulWidget {
+  const FavoriteCustomScroll({
     super.key,
     required this.places,
     required this.onRefresh,
@@ -15,10 +18,10 @@ class PlacesCustomScroll extends StatefulWidget {
   final Future<void> Function() onRefresh;
 
   @override
-  State<PlacesCustomScroll> createState() => _PlacesCustomScrollState();
+  State<FavoriteCustomScroll> createState() => _FavoriteCustomScrollState();
 }
 
-class _PlacesCustomScrollState extends State<PlacesCustomScroll> {
+class _FavoriteCustomScrollState extends State<FavoriteCustomScroll> {
   double dragOffset = 0.0;
   bool isLoading = false;
 
@@ -57,6 +60,10 @@ class _PlacesCustomScrollState extends State<PlacesCustomScroll> {
     return false;
   }
 
+  void onDismissed(Place place) {
+    context.read<PlacesBloc>().add(ToggleFavoritePlace(place: place));
+  }
+
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
@@ -85,8 +92,23 @@ class _PlacesCustomScrollState extends State<PlacesCustomScroll> {
               delegate: SliverChildBuilderDelegate(
                 (context, index) => Padding(
                   padding: EdgeInsets.only(top: 24.r),
-                  child: PlaceCardWidget(
-                    place: widget.places[index], // ваш список мест
+                  child: Stack(
+                    clipBehavior: Clip.hardEdge,
+                    children: <Widget>[
+                      DismissContainer(), // instead of background
+                      Dismissible(
+                        key: ValueKey('Dismissible-$index'),
+                        direction: DismissDirection.endToStart,
+
+                        onDismissed: (d) {
+                          onDismissed(widget.places[index]);
+                        },
+                        child: PlaceCardWidget(
+                          place: widget.places[index], // ваш список мест
+                          onShare: () {},
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 childCount: widget.places.length,

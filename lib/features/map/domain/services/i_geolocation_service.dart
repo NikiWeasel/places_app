@@ -9,4 +9,6 @@ abstract interface class IGeolocationService {
 
   /// Поток обновлений позиции пользователя
   Stream<Point> positionStream();
+
+  double measureDistance(Point first, Point second);
 }

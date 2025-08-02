@@ -2,9 +2,10 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:places_surf/assets/strings/app_strings.dart';
+import 'package:places_surf/common/ui/widgets/empty_screen_widget.dart';
 import 'package:places_surf/features/favorites/bloc/favorite_places_bloc.dart';
-import 'package:places_surf/features/favorites/ui/widgets/empty_screen_widget.dart';
-import 'package:places_surf/features/places/ui/widgets/place_card_widget.dart';
+import 'package:places_surf/features/favorites/ui/widgets/favorite_places_custom_scroll.dart';
+import 'package:places_surf/uikit/loading/large_progress_indicator.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
 
@@ -30,13 +31,9 @@ class FavoritesScreen extends StatelessWidget {
             title: Center(child: Text(AppStrings.placesScreenAppBarTitle)),
           ),
           body: switch (placesState) {
-            FavoritePlacesInitial() => Padding(
-              padding: EdgeInsets.only(top: screenHeight / 2 - 100),
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            LoadingFavoritePlacesState() => Padding(
-              padding: EdgeInsets.only(top: screenHeight / 2 - 100),
-              child: Center(child: CircularProgressIndicator()),
+            FavoritePlacesInitial() => Center(child: LargeProgressIndicator()),
+            LoadingFavoritePlacesState() => Center(
+              child: LargeProgressIndicator(),
             ),
             ErrorFavoritePlacesState() => Center(
               child: Text(
@@ -47,15 +44,9 @@ class FavoritesScreen extends StatelessWidget {
             LoadedFavoritePlacesState() =>
               placesState.places.isEmpty
                   ? Center(child: EmptyScreenWidget(onRefresh: refresh))
-                  : RefreshIndicator.adaptive(
+                  : FavoriteCustomScroll(
+                    places: placesState.places,
                     onRefresh: refresh,
-                    child: ListView.builder(
-                      itemCount: placesState.places.length,
-                      padding: EdgeInsets.all(8),
-                      itemBuilder:
-                          (context, index) =>
-                              PlaceCardWidget(place: placesState.places[index]),
-                    ),
                   ),
           },
         );

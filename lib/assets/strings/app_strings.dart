@@ -40,9 +40,16 @@ abstract class AppStrings {
   static const filterScreenKM = 'км';
   static const filterScreenShowButton = 'ПОКАЗАТЬ';
 
+  /// Пустой экран
+  static const placesEmptyScreen = 'Пока пусто';
+  static const placesScreenRefresh = 'Обновить';
+
+  /// Экран ошибки
+  static const placesErrorScreenTitle = 'Ошибка';
+  static const placesErrorScreenText = 'Что то пошло не так\nПопробуйте позже.';
+
   /// Избранное
-  static const favoritePlacesScreenEmpty = 'Пока ничего не сохранено';
-  static const favoritePlacesScreenRefresh = 'Обновить';
+  static const favoritePlacesScreenDismissText = 'Удалить';
 
   /// Детали места.
   static const placeDetailsRouteButton = 'ПОСТРОИТЬ МАРШРУТ';

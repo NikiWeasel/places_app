@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:places_surf/assets/images/app_svg_icons.dart';
-import 'package:places_surf/uikit/loading/icon_progress_indicator.dart';
+import 'package:places_surf/uikit/loading/small_progress_indicator.dart';
 
 class RefreshIndicatorDelegate extends SliverPersistentHeaderDelegate {
   final bool isLoading;
@@ -36,12 +35,7 @@ class RefreshIndicatorDelegate extends SliverPersistentHeaderDelegate {
     return SizedBox(
       height: maxHeight,
       child: Center(
-        child: Opacity(
-          opacity: opacity,
-          child: IconProgressIndicator(
-            widget: Image.asset(AppSvgIcons.icLoaderLargeBlack),
-          ),
-        ),
+        child: Opacity(opacity: opacity, child: SmallProgressIndicator()),
       ),
     );
   }

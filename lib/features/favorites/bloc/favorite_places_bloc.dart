@@ -39,9 +39,7 @@ class FavoritePlacesBloc
       try {
         emit(LoadingFavoritePlacesState());
         _places = await _placeRepository.getFavoritePlaces();
-        print(_places);
 
-        print('_places');
         emit(LoadedFavoritePlacesState(places: _places));
       } on DioException catch (e) {
         _places = await _savedPlacesRepository.getSavedFavoritePlaces();

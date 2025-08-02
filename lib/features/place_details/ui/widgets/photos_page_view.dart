@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:places_surf/common/domain/entities/place_images.dart';
+import 'package:places_surf/uikit/loading/small_progress_indicator.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 
 class PhotosPageView extends StatefulWidget {
@@ -63,7 +64,7 @@ class _PhotosPageViewState extends State<PhotosPageView> {
                       return Container(
                         color: colorScheme.secondary,
                         alignment: Alignment.center,
-                        child: CircularProgressIndicator(value: progress),
+                        child: SmallProgressIndicator(),
                       );
                     },
                     errorWidget:
