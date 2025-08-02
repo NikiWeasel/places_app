@@ -10,11 +10,22 @@ class TextButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? color;
   final EdgeInsetsGeometry? padding;
+  final Widget? icon;
 
   /// {@macro text_button_widget.class}
   const TextButtonWidget({
     required this.title,
     required this.onPressed,
+    this.color,
+    this.padding,
+    this.icon,
+    super.key,
+  });
+
+  const TextButtonWidget.icon({
+    required this.title,
+    required this.onPressed,
+    required this.icon,
     this.color,
     this.padding,
     super.key,
@@ -25,19 +36,22 @@ class TextButtonWidget extends StatelessWidget {
     final colorTheme = AppColorTheme.of(context);
     final textTheme = AppTextTheme.of(context);
 
-    return Padding(
-      padding: padding ?? const EdgeInsets.all(8),
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          foregroundColor: color ?? colorTheme.accent,
-          textStyle: textTheme.text,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: color ?? colorTheme.accent,
+        textStyle: textTheme.text,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
-        child: Text(title),
       ),
+      child:
+          icon == null
+              ? Text(title)
+              : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [icon!, const SizedBox(width: 8), Text(title)],
+              ),
     );
   }
 }

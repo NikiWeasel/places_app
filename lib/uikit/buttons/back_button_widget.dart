@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/assets/images/app_svg_icons.dart';
 import 'package:places_surf/uikit/buttons/button_rounded.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
@@ -17,9 +18,9 @@ class BackButtonWidget extends StatelessWidget {
     final colorTheme = AppColorTheme.of(context);
 
     return ButtonRounded(
-      size: 32,
+      size: 32.r,
       backgroundColor: colorTheme.scaffold,
-      radius: 50,
+      radius: 10.r,
       icon: AppSvgIcons.icArrow,
       iconColor: colorTheme.textSecondary,
       onPressed: onPressed ?? Navigator.of(context).pop,

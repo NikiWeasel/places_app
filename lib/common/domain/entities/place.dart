@@ -1,16 +1,21 @@
+import 'package:places_surf/assets/strings/app_strings.dart';
 import 'package:places_surf/common/domain/entities/place_images.dart';
 
 enum PlaceType {
-  other,
-  park,
-  monument,
-  theatre,
-  museum,
-  temple,
-  hotel,
-  restaurant,
-  cafe,
-  shopping,
+  other(AppStrings.filterScreenSpecial),
+  park(AppStrings.filterScreenPark),
+  monument(AppStrings.filterScreenMonument),
+  theatre(AppStrings.filterScreenTheatre),
+  museum(AppStrings.filterScreenMuseum),
+  temple(AppStrings.filterScreenTemple),
+  hotel(AppStrings.filterScreenHotel),
+  restaurant(AppStrings.filterScreenRestaurant),
+  cafe(AppStrings.filterScreenCafe),
+  shopping(AppStrings.filterScreenShopping);
+
+  final String label;
+
+  const PlaceType(this.label);
 }
 
 class Place {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/app/app.dart';
 import 'package:places_surf/app/di/app_dependencies.dart';
 import 'package:places_surf/router/app_router.dart';
@@ -15,5 +16,10 @@ Future<void> run() async {
 
   await setupDI(useMocks: true);
 
-  runApp(App(appRouter: appRouter));
+  runApp(
+    ScreenUtilInit(
+      designSize: Size(360, 760),
+      builder: (context, child) => App(appRouter: appRouter),
+    ),
+  );
 }

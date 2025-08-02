@@ -9,30 +9,35 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:flutter/material.dart' as _i8;
-import 'package:places_surf/common/domain/entities/place.dart' as _i10;
+import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
+import 'package:places_surf/common/domain/entities/place.dart' as _i13;
+import 'package:places_surf/common/domain/entities/place_images.dart' as _i12;
 import 'package:places_surf/features/favorites/ui/screens/favorites_screen.dart'
     as _i1;
-import 'package:places_surf/features/map/ui/screens/map_screen.dart' as _i2;
-import 'package:places_surf/features/place_details/ui/screens/place_details_screen.dart'
-    as _i3;
-import 'package:places_surf/features/places/ui/screens/places_screen.dart'
+import 'package:places_surf/features/map/ui/screens/map_screen.dart' as _i3;
+import 'package:places_surf/features/place_details/ui/screens/photos_screen.dart'
     as _i4;
-import 'package:places_surf/features/settings/ui/screens/settings_screen.dart'
+import 'package:places_surf/features/place_details/ui/screens/place_details_screen.dart'
+    as _i5;
+import 'package:places_surf/features/places/ui/screens/filter_screen.dart'
+    as _i2;
+import 'package:places_surf/features/places/ui/screens/places_screen.dart'
     as _i6;
-import 'package:places_surf/router/ui/root_screen.dart' as _i5;
-import 'package:yandex_maps_mapkit/mapkit.dart' as _i9;
+import 'package:places_surf/features/settings/ui/screens/settings_screen.dart'
+    as _i8;
+import 'package:places_surf/router/ui/root_screen.dart' as _i7;
+import 'package:yandex_maps_mapkit/mapkit.dart' as _i11;
 
 /// generated route for
 /// [_i1.FavoritesScreen]
-class FavoritesRoute extends _i7.PageRouteInfo<void> {
-  const FavoritesRoute({List<_i7.PageRouteInfo>? children})
+class FavoritesRoute extends _i9.PageRouteInfo<void> {
+  const FavoritesRoute({List<_i9.PageRouteInfo>? children})
     : super(FavoritesRoute.name, initialChildren: children);
 
   static const String name = 'FavoritesRoute';
 
-  static _i7.PageInfo page = _i7.PageInfo(
+  static _i9.PageInfo page = _i9.PageInfo(
     name,
     builder: (data) {
       return const _i1.FavoritesScreen();
@@ -41,12 +46,28 @@ class FavoritesRoute extends _i7.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.MapScreen]
-class MapRoute extends _i7.PageRouteInfo<MapRouteArgs> {
+/// [_i2.FilterScreen]
+class FilterRoute extends _i9.PageRouteInfo<void> {
+  const FilterRoute({List<_i9.PageRouteInfo>? children})
+    : super(FilterRoute.name, initialChildren: children);
+
+  static const String name = 'FilterRoute';
+
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      return const _i2.FilterScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [_i3.MapScreen]
+class MapRoute extends _i9.PageRouteInfo<MapRouteArgs> {
   MapRoute({
-    _i8.Key? key,
-    required _i9.Point? point,
-    List<_i7.PageRouteInfo>? children,
+    _i10.Key? key,
+    required _i11.Point? point,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
          MapRoute.name,
          args: MapRouteArgs(key: key, point: point),
@@ -55,11 +76,11 @@ class MapRoute extends _i7.PageRouteInfo<MapRouteArgs> {
 
   static const String name = 'MapRoute';
 
-  static _i7.PageInfo page = _i7.PageInfo(
+  static _i9.PageInfo page = _i9.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<MapRouteArgs>();
-      return _i2.MapScreen(key: args.key, point: args.point);
+      return _i3.MapScreen(key: args.key, point: args.point);
     },
   );
 }
@@ -67,9 +88,9 @@ class MapRoute extends _i7.PageRouteInfo<MapRouteArgs> {
 class MapRouteArgs {
   const MapRouteArgs({this.key, required this.point});
 
-  final _i8.Key? key;
+  final _i10.Key? key;
 
-  final _i9.Point? point;
+  final _i11.Point? point;
 
   @override
   String toString() {
@@ -88,12 +109,77 @@ class MapRouteArgs {
 }
 
 /// generated route for
-/// [_i3.PlaceDetailsScreen]
-class PlaceDetailsRoute extends _i7.PageRouteInfo<PlaceDetailsRouteArgs> {
+/// [_i4.PhotosScreen]
+class PhotosRoute extends _i9.PageRouteInfo<PhotosRouteArgs> {
+  PhotosRoute({
+    _i10.Key? key,
+    required _i12.PlaceImages placeImages,
+    required int initialPage,
+    List<_i9.PageRouteInfo>? children,
+  }) : super(
+         PhotosRoute.name,
+         args: PhotosRouteArgs(
+           key: key,
+           placeImages: placeImages,
+           initialPage: initialPage,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'PhotosRoute';
+
+  static _i9.PageInfo page = _i9.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<PhotosRouteArgs>();
+      return _i4.PhotosScreen(
+        key: args.key,
+        placeImages: args.placeImages,
+        initialPage: args.initialPage,
+      );
+    },
+  );
+}
+
+class PhotosRouteArgs {
+  const PhotosRouteArgs({
+    this.key,
+    required this.placeImages,
+    required this.initialPage,
+  });
+
+  final _i10.Key? key;
+
+  final _i12.PlaceImages placeImages;
+
+  final int initialPage;
+
+  @override
+  String toString() {
+    return 'PhotosRouteArgs{key: $key, placeImages: $placeImages, initialPage: $initialPage}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PhotosRouteArgs) return false;
+    return key == other.key &&
+        placeImages == other.placeImages &&
+        initialPage == other.initialPage;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^ placeImages.hashCode ^ initialPage.hashCode;
+}
+
+/// generated route for
+/// [_i5.PlaceDetailsScreen]
+class PlaceDetailsRoute extends _i9.PageRouteInfo<PlaceDetailsRouteArgs> {
   PlaceDetailsRoute({
-    _i8.Key? key,
-    required _i10.Place place,
-    List<_i7.PageRouteInfo>? children,
+    _i10.Key? key,
+    required _i13.Place place,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
          PlaceDetailsRoute.name,
          args: PlaceDetailsRouteArgs(key: key, place: place),
@@ -102,11 +188,11 @@ class PlaceDetailsRoute extends _i7.PageRouteInfo<PlaceDetailsRouteArgs> {
 
   static const String name = 'PlaceDetailsRoute';
 
-  static _i7.PageInfo page = _i7.PageInfo(
+  static _i9.PageInfo page = _i9.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<PlaceDetailsRouteArgs>();
-      return _i3.PlaceDetailsScreen(key: args.key, place: args.place);
+      return _i5.PlaceDetailsScreen(key: args.key, place: args.place);
     },
   );
 }
@@ -114,9 +200,9 @@ class PlaceDetailsRoute extends _i7.PageRouteInfo<PlaceDetailsRouteArgs> {
 class PlaceDetailsRouteArgs {
   const PlaceDetailsRouteArgs({this.key, required this.place});
 
-  final _i8.Key? key;
+  final _i10.Key? key;
 
-  final _i10.Place place;
+  final _i13.Place place;
 
   @override
   String toString() {
@@ -135,49 +221,49 @@ class PlaceDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i4.PlacesScreen]
-class PlacesRoute extends _i7.PageRouteInfo<void> {
-  const PlacesRoute({List<_i7.PageRouteInfo>? children})
+/// [_i6.PlacesScreen]
+class PlacesRoute extends _i9.PageRouteInfo<void> {
+  const PlacesRoute({List<_i9.PageRouteInfo>? children})
     : super(PlacesRoute.name, initialChildren: children);
 
   static const String name = 'PlacesRoute';
 
-  static _i7.PageInfo page = _i7.PageInfo(
+  static _i9.PageInfo page = _i9.PageInfo(
     name,
     builder: (data) {
-      return const _i4.PlacesScreen();
+      return const _i6.PlacesScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i5.RootScreen]
-class RootRoute extends _i7.PageRouteInfo<void> {
-  const RootRoute({List<_i7.PageRouteInfo>? children})
+/// [_i7.RootScreen]
+class RootRoute extends _i9.PageRouteInfo<void> {
+  const RootRoute({List<_i9.PageRouteInfo>? children})
     : super(RootRoute.name, initialChildren: children);
 
   static const String name = 'RootRoute';
 
-  static _i7.PageInfo page = _i7.PageInfo(
+  static _i9.PageInfo page = _i9.PageInfo(
     name,
     builder: (data) {
-      return const _i5.RootScreen();
+      return const _i7.RootScreen();
     },
   );
 }
 
 /// generated route for
-/// [_i6.SettingsScreen]
-class SettingsRoute extends _i7.PageRouteInfo<void> {
-  const SettingsRoute({List<_i7.PageRouteInfo>? children})
+/// [_i8.SettingsScreen]
+class SettingsRoute extends _i9.PageRouteInfo<void> {
+  const SettingsRoute({List<_i9.PageRouteInfo>? children})
     : super(SettingsRoute.name, initialChildren: children);
 
   static const String name = 'SettingsRoute';
 
-  static _i7.PageInfo page = _i7.PageInfo(
+  static _i9.PageInfo page = _i9.PageInfo(
     name,
     builder: (data) {
-      return const _i6.SettingsScreen();
+      return const _i8.SettingsScreen();
     },
   );
 }

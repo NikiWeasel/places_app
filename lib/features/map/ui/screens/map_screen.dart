@@ -94,6 +94,14 @@ class _MapScreenState extends State<MapScreen> {
     return BlocBuilder<MapBloc, MapState>(
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(
+            title: Center(
+              child: Text(
+                AppStrings.placesScreenBottomNavMap,
+                // style: appTextTheme.subtitle,
+              ),
+            ),
+          ),
           body: switch (state) {
             MapInitial() => Center(child: CircularProgressIndicator()),
             MapLoading() => Center(child: CircularProgressIndicator()),

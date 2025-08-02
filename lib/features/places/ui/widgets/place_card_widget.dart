@@ -1,13 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:places_surf/assets/images/app_svg_icons.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/entities/place_images.dart';
 import 'package:places_surf/features/places/bloc/places_bloc.dart';
 import 'package:places_surf/router/app_router.gr.dart';
+import 'package:places_surf/uikit/images/svg_picture_widget.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
-import 'package:yandex_maps_mapkit/mapkit.dart' as ymk;
 
 class PlaceCardWidget extends StatelessWidget {
   const PlaceCardWidget({super.key, required this.place});
@@ -20,22 +22,20 @@ class PlaceCardWidget extends StatelessWidget {
     final colorTheme = AppColorTheme.of(context);
 
     Future<void> pushDetailsScreen() async {
-      final result = await context.pushRoute(PlaceDetailsRoute(place: place));
-      if (result != null) {
-        final tabsRouter = AutoTabsRouter.of(context);
-        // tabsRouter.setActiveIndex(1); // Переход к MapRoute
-        context.navigateTo(MapRoute(point: (result as ymk.Point?)));
-      }
+      context.pushRoute(PlaceDetailsRoute(place: place));
     }
 
     return InkWell(
       onTap: pushDetailsScreen,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          color: colorTheme.background,
+        ),
         child: Column(
           children: [
             SizedBox(
-              height: 160,
+              height: 96.h,
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,
@@ -46,15 +46,27 @@ class PlaceCardWidget extends StatelessWidget {
 
                       if (images is ImagesUrls) {
                         if (images.urls.isEmpty) return const SizedBox();
-                        return Image.network(
-                          images.urls.first,
-                          fit: BoxFit.cover,
+                        return ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                          child: Image.network(
+                            images.urls.first,
+                            fit: BoxFit.cover,
+                          ),
                         );
                       } else if (images is ImagesBytes) {
                         if (images.images.isEmpty) return const SizedBox();
-                        return Image.memory(
-                          images.images.first,
-                          fit: BoxFit.cover,
+                        return ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                          child: Image.memory(
+                            images.images.first,
+                            fit: BoxFit.cover,
+                          ),
                         );
                       } else {
                         return const SizedBox();
@@ -68,7 +80,7 @@ class PlaceCardWidget extends StatelessWidget {
                     left: 16,
                     top: 16,
                     child: Text(
-                      place.type.name,
+                      place.type.label.toLowerCase(),
                       style: textTheme.smallBold.copyWith(
                         color: colorTheme.neutralWhite,
                       ),
@@ -85,9 +97,12 @@ class PlaceCardWidget extends StatelessWidget {
                       },
                       icon:
                           place.isFavorite
-                              ? Icon(Icons.favorite, color: Colors.red)
-                              : Icon(
-                                Icons.favorite_border,
+                              ? SvgPictureWidget(
+                                AppSvgIcons.icHeartFull,
+                                color: Colors.white,
+                              )
+                              : SvgPictureWidget(
+                                AppSvgIcons.icHeart,
                                 color: Colors.white,
                               ),
                     ),
@@ -96,30 +111,26 @@ class PlaceCardWidget extends StatelessWidget {
               ),
             ),
             Container(
-              height: 120,
+              height: 92.h,
               width: double.infinity,
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.r),
 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     place.name,
-                    style: textTheme.text.copyWith(
-                      color: colorTheme.textSecondary,
-                    ),
+                    style: textTheme.subtitle,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 2.h),
                   Text(
                     place.description,
                     softWrap: true,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: textTheme.small.copyWith(
-                      color: colorTheme.textSecondaryVariant,
-                    ),
+                    style: textTheme.text,
                   ),
                 ],
               ),

@@ -22,7 +22,7 @@ class PlacesBloc extends Bloc<PlacesEvent, PlacesState> {
   PlacesBloc(this._placeRepository, this._favoriteRepository)
     : super(PlacesInitial()) {
     _subscription = _querySubject
-        .debounceTime(const Duration(milliseconds: 400))
+        .debounceTime(const Duration(milliseconds: 500))
         .distinct()
         .switchMap<List<Place>>(
           (query) =>

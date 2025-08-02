@@ -15,11 +15,30 @@ abstract class AppStrings {
   static const onboardingStartButton = 'На старт';
 
   /// Список мест.
-  static const placesScreenAppBarTitle = 'Список мест';
+  static const placesScreenAppBarTitle = 'Список интересных мест';
   static const placesScreenBottomNavPlaces = 'Места';
   static const placesScreenBottomNavMap = 'Карта';
   static const placesScreenBottomNavFavorites = 'Избранное';
   static const placesScreenBottomNavSettings = 'Настройки';
+
+  /// Фильтры
+  static const filterScreenAppBarClearButton = 'Очистить';
+  static const filterScreenCategories = 'КАТЕГОРИИ';
+  static const filterScreenHotel = 'Отель';
+  static const filterScreenRestaurant = 'Ресторан';
+  static const filterScreenSpecial = 'Особое место';
+  static const filterScreenPark = 'Парк';
+  static const filterScreenMuseum = 'Музей';
+  static const filterScreenCafe = 'Кафе';
+  static const filterScreenMonument = 'Памятник';
+  static const filterScreenTheatre = 'Театр';
+  static const filterScreenTemple = 'Храм';
+  static const filterScreenShopping = 'Шоппинг';
+  static const filterScreenDistance = 'Расстояние';
+  static const filterScreenFrom = 'от';
+  static const filterScreenTo = 'до';
+  static const filterScreenKM = 'км';
+  static const filterScreenShowButton = 'ПОКАЗАТЬ';
 
   /// Избранное
   static const favoritePlacesScreenEmpty = 'Пока ничего не сохранено';
@@ -27,6 +46,7 @@ abstract class AppStrings {
 
   /// Детали места.
   static const placeDetailsRouteButton = 'ПОСТРОИТЬ МАРШРУТ';
+  static const placeDetailsShareButton = 'Поделиться';
   static const placeDetailsFavoritesButton = 'В Избранное';
   static const placeDetailsInFavoritesButton = 'В Избранном';
 
@@ -44,5 +64,5 @@ abstract class AppStrings {
   static const settingsStub = 'Настройки (заглушка)';
 
   /// TextInput
-  static const searchBar = 'Поиск по местам';
+  static const searchBar = 'Поиск';
 }
