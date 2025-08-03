@@ -17,7 +17,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       final end = event.destination;
       try {
         _iMapRepository.startNewRoute(end);
-        emit(MapLoaded());
+        emit(MapLoaded(selectedPoint: null));
       } catch (e) {
         emit(MapError(msg: e.toString()));
       }
@@ -27,7 +27,31 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       emit(MapLoading());
       try {
         _iMapRepository.toDefaultLocation();
-        emit(MapLoaded());
+        emit(MapLoaded(selectedPoint: null));
+      } catch (e) {
+        emit(MapError(msg: e.toString()));
+      }
+    });
+
+    on<BuildPointsMapEvent>((event, emit) {
+      emit(MapLoading());
+      try {
+        _iMapRepository.buildNewPOIs(event.points, (point) {
+          // print('object');
+          // print(point);
+          add(PlaceSelectedByMap(selectedPoint: point));
+        });
+        emit(MapLoaded(selectedPoint: null));
+      } catch (e) {
+        emit(MapError(msg: e.toString()));
+      }
+    });
+
+    on<PlaceSelectedByMap>((event, emit) {
+      emit(MapLoading());
+      try {
+        // _iMapRepository.toDefaultLocation();
+        emit(MapLoaded(selectedPoint: event.selectedPoint));
       } catch (e) {
         emit(MapError(msg: e.toString()));
       }

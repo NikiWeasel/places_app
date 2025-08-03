@@ -6,4 +6,9 @@ abstract interface class IMapRepository {
   Future<void> startNewRoute(Point destinationPoint);
 
   Future<void> clearMap();
+
+  Future<void> buildNewPOIs(
+    List<Point> points,
+    void Function(Point point) callback,
+  );
 }

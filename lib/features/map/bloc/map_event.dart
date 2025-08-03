@@ -9,4 +9,16 @@ class BuildNewRouteMapEvent extends MapEvent {
   BuildNewRouteMapEvent(this.destination);
 }
 
+class BuildPointsMapEvent extends MapEvent {
+  final List<Point> points;
+
+  BuildPointsMapEvent(this.points);
+}
+
 class ToDefaultPointMapEvent extends MapEvent {}
+
+class PlaceSelectedByMap extends MapEvent {
+  final Point selectedPoint;
+
+  PlaceSelectedByMap({required this.selectedPoint});
+}

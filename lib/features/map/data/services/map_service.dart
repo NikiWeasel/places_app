@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:places_surf/features/map/data/repositories/map_object_tap_listener_impl.dart';
 import 'package:places_surf/features/map/domain/services/i_map_service.dart';
 import 'package:yandex_maps_mapkit/directions.dart';
 import 'package:yandex_maps_mapkit/image.dart' as image_provider;
@@ -72,6 +73,31 @@ class MapService implements IMapService {
     mapWindow?.map.mapObjects.addPlacemark()
       ?..geometry = position
       ..setIcon(destinationIconImageProvider);
+  }
+
+  @override
+  Future<void> placeInteractiveDestinationIcon(
+    Point position, {
+    required void Function(Point point) callback,
+  }) async {
+    final destinationIconImageProvider = image_provider
+        .ImageProvider.fromImageProvider(
+      const AssetImage("assets/images/location.png"),
+    );
+
+    mapWindow?.map.mapObjects.addPlacemark()
+      ?..geometry = position
+      ..setIcon(destinationIconImageProvider)
+      ..addTapListener(
+        MapObjectTapListenerImpl(
+          onMapObjectTapped: (MapObject object, Point point) {
+            print('object');
+            print(point);
+            callback(point);
+            return false;
+          },
+        ),
+      );
   }
 
   @override

@@ -36,4 +36,21 @@ class MapRepository implements IMapRepository {
   Future<void> clearMap() async {
     mapService.clearMapObjects();
   }
+
+  @override
+  Future<void> buildNewPOIs(
+    List<Point> points,
+
+    void Function(Point point) callback,
+  ) async {
+    await clearMap();
+    for (var position in points) {
+      await mapService.placeInteractiveDestinationIcon(
+        position,
+        callback: callback,
+      );
+      // await mapService.placeDestinationIcon(position);
+    }
+    // await mapService.placeDestinationIcon(points[points.length - 1]);
+  }
 }
