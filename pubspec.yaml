@@ -25,6 +25,7 @@ dependencies:
   pool: ^1.5.1
   retrofit: ^4.6.0
   rxdart: ^0.28.0
+  share_plus: ^11.0.0
   shared_preferences: ^2.5.3
   smooth_page_indicator: ^1.2.1
   yandex_maps_mapkit: ^4.18.0-beta

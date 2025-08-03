@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/assets/images/app_svg_icons.dart';
 import 'package:places_surf/assets/strings/app_strings.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
+import 'package:places_surf/common/utils/share_utils.dart';
 import 'package:places_surf/features/place_details/ui/widgets/photos_page_view.dart';
 import 'package:places_surf/features/place_details/ui/widgets/place_detail_content_widget.dart';
 import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
@@ -108,7 +109,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                         title: AppStrings.placeDetailsShareButton,
                         color: colorTheme.textPrimary,
                         onPressed: () {
-                          //TODO реализовать поделиться
+                          sharePlace(widget.place);
                         },
                         icon: SvgPictureWidget(
                           AppSvgIcons.icShare,

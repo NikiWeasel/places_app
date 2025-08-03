@@ -84,4 +84,7 @@ abstract class AppStrings {
 
   /// TextInput
   static const searchBar = 'Поиск';
+
+  /// Поделиться
+  static const shareFavorite = '⭐ Это место в моих избранных!';
 }

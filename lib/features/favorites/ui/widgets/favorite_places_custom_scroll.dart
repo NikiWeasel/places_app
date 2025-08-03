@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
+import 'package:places_surf/common/utils/share_utils.dart';
 import 'package:places_surf/features/favorites/ui/widgets/dismiss_container.dart';
 import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
 import 'package:places_surf/features/places/ui/widgets/place_card_widget.dart';
@@ -105,7 +106,9 @@ class _FavoriteCustomScrollState extends State<FavoriteCustomScroll> {
                         },
                         child: PlaceCardWidget(
                           place: widget.places[index], // ваш список мест
-                          onShare: () {},
+                          onShare: () {
+                            sharePlace(widget.places[index]);
+                          },
                         ),
                       ),
                     ],
