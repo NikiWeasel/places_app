@@ -61,7 +61,7 @@ class SearchPlacesContent extends StatelessWidget {
                       AppStrings.searchScreenExSearchStrings,
                       style: appTextTheme.superSmall.copyWith(
                         color: appColorTheme.secondaryVariant.withValues(
-                          alpha: 56,
+                          alpha: 0.56,
                         ),
                       ),
                     ),

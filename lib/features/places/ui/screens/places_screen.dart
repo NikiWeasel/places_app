@@ -11,6 +11,7 @@ import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
 import 'package:places_surf/features/places/ui/widgets/places_custom_scroll.dart';
 import 'package:places_surf/features/search/bloc/search_places_bloc.dart';
 import 'package:places_surf/features/search/ui/widgets/search_places_content.dart';
+import 'package:places_surf/features/settings/bloc/settings_bloc.dart';
 import 'package:places_surf/router/app_router.gr.dart';
 import 'package:places_surf/uikit/buttons/icon_action_button.dart';
 import 'package:places_surf/uikit/images/svg_picture_widget.dart';
@@ -100,18 +101,30 @@ class _PlacesScreenState extends State<PlacesScreen> {
       context.read<SearchPlacesBloc>().add(SearchQueryChanged(sp));
     }
 
-    return BlocListener<SearchPlacesBloc, SearchPlacesState>(
-      listener: (context, state) {
-        if (state is LoadedSearchPlacesState) {
-          final restoredQuery = state.currentQuery;
-          if (_controller.text != restoredQuery) {
-            _controller.text = restoredQuery;
-            _controller.selection = TextSelection.collapsed(
-              offset: restoredQuery.length,
-            );
-          }
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SearchPlacesBloc, SearchPlacesState>(
+          listener: (context, state) {
+            if (state is LoadedSearchPlacesState) {
+              final restoredQuery = state.currentQuery;
+              if (_controller.text != restoredQuery) {
+                _controller.text = restoredQuery;
+                _controller.selection = TextSelection.collapsed(
+                  offset: restoredQuery.length,
+                );
+              }
+            }
+          },
+        ),
+        BlocListener<SettingsBloc, SettingsState>(
+          listener: (context, state) {
+            if (state is SettingsLoaded &&
+                !state.settings.didFinishOnboarding) {
+              context.pushRoute(OnboardingRoute());
+            }
+          },
+        ),
+      ],
       child: BlocBuilder<PlacesBloc, PlacesState>(
         builder: (context, placesState) {
           return Scaffold(

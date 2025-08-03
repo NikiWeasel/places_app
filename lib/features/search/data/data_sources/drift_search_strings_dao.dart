@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:places_surf/common/data/api_db/local_places_database.dart';
-import 'package:places_surf/common/domain/services/i_search_strings_service.dart';
+import 'package:places_surf/features/search/domain/services/i_search_strings_service.dart';
 
 class DriftSearchStringsDAO implements ISearchStringsService {
   final LocalPlacesDatabase _db;
@@ -10,12 +10,12 @@ class DriftSearchStringsDAO implements ISearchStringsService {
   @override
   Future<void> addExSearchString(String search, {int limit = 5}) async {
     await _db.transaction(() async {
-      await _db.into(_db.exSearchQueriesTable).insert(
-        ExSearchQueriesTableCompanion(
-          searchString: Value(search),
-        ),
-        mode: InsertMode.insertOrIgnore
-      );
+      await _db
+          .into(_db.exSearchQueriesTable)
+          .insert(
+            ExSearchQueriesTableCompanion(searchString: Value(search)),
+            mode: InsertMode.insertOrIgnore,
+          );
 
       await _enforceSearchStringLimit(limit);
     });
@@ -23,9 +23,9 @@ class DriftSearchStringsDAO implements ISearchStringsService {
 
   Future<void> _enforceSearchStringLimit(int limit) async {
     final countExp = _db.exSearchQueriesTable.id.count();
-    final countRes = await (_db.selectOnly(_db.exSearchQueriesTable)
-      ..addColumns([countExp]))
-        .getSingle();
+    final countRes =
+        await (_db.selectOnly(_db.exSearchQueriesTable)
+          ..addColumns([countExp])).getSingle();
     final totalCount = countRes.read(countExp)!;
 
     if (totalCount <= limit) return;
@@ -40,8 +40,7 @@ class DriftSearchStringsDAO implements ISearchStringsService {
 
     for (final entry in oldEntries) {
       await (_db.delete(_db.exSearchQueriesTable)
-        ..where((t) => t.id.equals(entry.id)))
-          .go();
+        ..where((t) => t.id.equals(entry.id))).go();
     }
   }
 

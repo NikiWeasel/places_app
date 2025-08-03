@@ -24,7 +24,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
         rangeValues,
       );
       // _places = newPlaces;
-      print(filteredPlaces);
+      // print(filteredPlaces);
       emit(
         CategoriesSet(
           filteredPlaces: filteredPlaces,

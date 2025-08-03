@@ -30,7 +30,7 @@ class AppTextField extends StatelessWidget {
     final textTheme = TextTheme.of(context);
 
     // Выбор контрастного цвета относительно surface
-    final contrastFill = colorTheme.background;
+    final contrastFill = colorTheme.surface;
 
     return TextField(
       focusNode: focusNode,

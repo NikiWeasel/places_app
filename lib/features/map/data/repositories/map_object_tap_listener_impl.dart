@@ -7,8 +7,6 @@ final class MapObjectTapListenerImpl implements MapObjectTapListener {
 
   @override
   bool onMapObjectTap(MapObject mapObject, Point point) {
-    print('object');
-    print(point);
     return onMapObjectTapped(mapObject, point);
   }
 }

@@ -1,9 +1,9 @@
-import 'package:places_surf/common/data/data_sources/drift_favorites_dao.dart';
-import 'package:places_surf/common/data/data_sources/drift_search_strings_dao.dart';
+import 'package:places_surf/common/data/data_sources/drift_places_dao.dart';
 import 'package:places_surf/common/data/dto/search/query/search_place_query_dto.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/entities/search_place_query.dart';
 import 'package:places_surf/features/places/data/api/rest_client.dart';
+import 'package:places_surf/features/search/data/data_sources/drift_search_strings_dao.dart';
 import 'package:places_surf/features/search/domain/repositories/i_search_repository.dart';
 
 class SearchRepository implements ISearchRepository {

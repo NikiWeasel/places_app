@@ -139,7 +139,7 @@ class _FilterScreenContentState extends State<FilterScreenContent> {
     final appTextTheme = AppTextTheme.of(context);
     final appColorTheme = AppColorTheme.of(context);
 
-    print(widget.filteredPlaces);
+    // print(widget.filteredPlaces);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: SizedBox(

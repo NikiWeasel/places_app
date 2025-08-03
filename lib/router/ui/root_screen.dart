@@ -21,32 +21,45 @@ class RootScreen extends StatelessWidget {
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         final colorTheme = AppColorTheme.of(context);
+        final color =
+            Theme.of(context).brightness == Brightness.light
+                ? Colors.black
+                : colorTheme.icon;
 
         return BottomNavigationBar(
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          fixedColor: colorTheme.textPrimary,
+          // fixedColor: colorTheme.textPrimary,
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
           items: [
             BottomNavigationBarItem(
-              icon: SvgPictureWidget(AppSvgIcons.icList),
-              activeIcon: SvgPictureWidget(AppSvgIcons.icListFull),
+              icon: SvgPictureWidget(AppSvgIcons.icList, color: color),
+              activeIcon: SvgPictureWidget(
+                AppSvgIcons.icListFull,
+                color: color,
+              ),
               label: AppStrings.placesScreenBottomNavPlaces,
             ),
             BottomNavigationBarItem(
-              icon: SvgPictureWidget(AppSvgIcons.icMap),
-              activeIcon: SvgPictureWidget(AppSvgIcons.icMapFull),
+              icon: SvgPictureWidget(AppSvgIcons.icMap, color: color),
+              activeIcon: SvgPictureWidget(AppSvgIcons.icMapFull, color: color),
               label: AppStrings.placesScreenBottomNavMap,
             ),
             BottomNavigationBarItem(
-              icon: SvgPictureWidget(AppSvgIcons.icHeart),
-              activeIcon: SvgPictureWidget(AppSvgIcons.icHeartFull),
+              icon: SvgPictureWidget(AppSvgIcons.icHeart, color: color),
+              activeIcon: SvgPictureWidget(
+                AppSvgIcons.icHeartFull,
+                color: color,
+              ),
               label: AppStrings.placesScreenBottomNavFavorites,
             ),
             BottomNavigationBarItem(
-              icon: SvgPictureWidget(AppSvgIcons.icSettings),
-              activeIcon: SvgPictureWidget(AppSvgIcons.icSettingsFull),
+              icon: SvgPictureWidget(AppSvgIcons.icSettings, color: color),
+              activeIcon: SvgPictureWidget(
+                AppSvgIcons.icSettingsFull,
+                color: color,
+              ),
               label: AppStrings.placesScreenBottomNavSettings,
             ),
           ],

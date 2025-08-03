@@ -41,6 +41,8 @@ class _MapScreenState extends State<MapScreen> {
   bool _isMapkitActive = false;
   late final UserLocationLayer _userLocationLayer;
 
+  // late final MapDeps mapDeps;
+
   String text = '';
   late FocusNode focusNode;
   late TextEditingController _controller;
@@ -121,6 +123,11 @@ class _MapScreenState extends State<MapScreen> {
       mapkit.onStop();
     }
   }
+
+  // void _setMapTheme() {
+  //   mapDeps.mapWindow.map.nightModeEnabled =
+  //       Theme.of(context).brightness == Brightness.dark;
+  // }
 
   Place getPlaceByPoint(Point point, List<Place> places) {
     return places
@@ -248,6 +255,12 @@ class _MapScreenState extends State<MapScreen> {
                             onMapCreated: (mapWindow) {
                               final controller = getIt<MapService>();
                               controller.init(mapWindow);
+
+                              // mapDeps = MapDepsScope(
+                              //   window,
+                              //   navigationHolder.navigation,
+                              //   locationManager,
+                              // );
 
                               _userLocationLayer =
                                   mapkit.createUserLocationLayer(mapWindow)

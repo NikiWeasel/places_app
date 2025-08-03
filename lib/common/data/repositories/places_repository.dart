@@ -1,4 +1,4 @@
-import 'package:places_surf/common/data/data_sources/drift_favorites_dao.dart';
+import 'package:places_surf/common/data/data_sources/drift_places_dao.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
 import 'package:places_surf/features/places/data/api/rest_client.dart';

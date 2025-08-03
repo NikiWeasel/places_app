@@ -37,6 +37,7 @@ class SearchResultEmptyWidget extends StatelessWidget {
             style: appTextTheme.small.copyWith(
               color: appColorTheme.secondaryVariant.withValues(alpha: 0.56),
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

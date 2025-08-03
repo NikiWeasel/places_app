@@ -12,7 +12,7 @@ abstract class AppStrings {
   static const onboardingPage3Title = 'Добавляй места,\nкоторые нашёл сам';
   static const onboardingPage3Description =
       'Делись самыми интересными\nи помоги нам стать лучше!';
-  static const onboardingStartButton = 'На старт';
+  static const onboardingStartButton = 'НА СТАРТ';
 
   /// Список мест.
   static const placesScreenAppBarTitle = 'Список интересных мест';
@@ -72,6 +72,11 @@ abstract class AppStrings {
   static const placesLoading = 'Загрузка';
   static const placesError = 'Что-то пошло не так.\\n Ошибка: ';
   static const noPhoto = 'Нет фото';
+
+  /// Настройки
+  static const settingsScreenAppBarTitle = 'Настройки';
+  static const settingsScreenDarkMode = 'Тёмная тема';
+  static const settingsScreenWatchTutorial = 'Смотреть туториал';
 
   /// Заглушки
   static const favoritesStub = 'Избранное (заглушка)';

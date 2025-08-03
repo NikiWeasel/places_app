@@ -44,7 +44,6 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     }
 
     void openPhotoScreen() {
-      print(currentIndex);
       context.pushRoute(
         PhotosRoute(
           placeImages: widget.place.images,
@@ -106,7 +105,10 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                         onPressed: () {
                           //TODO реализовать поделиться
                         },
-                        icon: SvgPictureWidget(AppSvgIcons.icShare),
+                        icon: SvgPictureWidget(
+                          AppSvgIcons.icShare,
+                          color: colorTheme.icon,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -123,6 +125,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                           widget.place.isFavorite
                               ? AppSvgIcons.icHeartFull
                               : AppSvgIcons.icHeart,
+                          color: colorTheme.icon,
                         ),
                       ),
                     ),

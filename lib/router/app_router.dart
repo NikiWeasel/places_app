@@ -20,5 +20,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: PlaceDetailsRoute.page),
     AutoRoute(page: FilterRoute.page),
     AutoRoute(page: PhotosRoute.page),
+    AutoRoute(page: OnboardingRoute.page),
   ];
 }

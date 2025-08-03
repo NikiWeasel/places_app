@@ -91,8 +91,8 @@ class MapService implements IMapService {
       ..addTapListener(
         MapObjectTapListenerImpl(
           onMapObjectTapped: (MapObject object, Point point) {
-            print('object');
-            print(point);
+            // print('object');
+            // print(point);
             callback(point);
             return false;
           },

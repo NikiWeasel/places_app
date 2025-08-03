@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:places_surf/common/data/api_db/local_places_database.dart';
-import 'package:places_surf/common/data/data_sources/drift_favorites_dao.dart';
-import 'package:places_surf/common/data/data_sources/drift_search_strings_dao.dart';
+import 'package:places_surf/common/data/data_sources/drift_places_dao.dart';
 import 'package:places_surf/common/data/repositories/places_repository.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
 import 'package:places_surf/features/favorites/data/repositories/saved_places_repository.dart';
@@ -15,9 +14,14 @@ import 'package:places_surf/features/map/domain/services/i_geolocation_service.d
 import 'package:places_surf/features/places/data/api/rest_client.dart';
 import 'package:places_surf/features/places/data/repositories/categories_repository.dart';
 import 'package:places_surf/features/places/domain/repositories/i_categories_repository.dart';
+import 'package:places_surf/features/search/data/data_sources/drift_search_strings_dao.dart';
 import 'package:places_surf/features/search/data/repositories/search_repository.dart';
 import 'package:places_surf/features/search/domain/repositories/i_search_repository.dart';
+import 'package:places_surf/features/settings/data/data_sources/settings_dao.dart';
+import 'package:places_surf/features/settings/data/repositories/settings_repository.dart';
+import 'package:places_surf/features/settings/domain/repositories/i_settings_repository.dart';
 import 'package:places_surf/test_mocks/geolocation_service_mock.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
@@ -36,6 +40,10 @@ Future<void> setupDI({required bool useMocks}) async {
   // Drift
   getIt.registerLazySingleton(() => LocalPlacesDatabase());
 
+  // SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton(() => prefs);
+
   // Retrofit
   getIt.registerLazySingleton<RestClient>(() => RestClient(getIt<Dio>()));
 
@@ -45,6 +53,10 @@ Future<void> setupDI({required bool useMocks}) async {
 
   getIt.registerLazySingleton<DriftSearchStringsDAO>(
     () => DriftSearchStringsDAO(getIt<LocalPlacesDatabase>()),
+  );
+
+  getIt.registerLazySingleton<SettingsDAO>(
+    () => SettingsDAO(getIt<SharedPreferences>()),
   );
 
   if (useMocks) {
@@ -83,5 +95,9 @@ Future<void> setupDI({required bool useMocks}) async {
       getIt<DriftSearchStringsDAO>(),
       getIt<DriftPlacesDAO>(),
     ),
+  );
+
+  getIt.registerLazySingleton<ISettingsRepository>(
+    () => SettingsRepository(getIt<SettingsDAO>()),
   );
 }

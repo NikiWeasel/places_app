@@ -12,6 +12,8 @@ import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
 import 'package:places_surf/features/places/domain/repositories/i_categories_repository.dart';
 import 'package:places_surf/features/search/bloc/search_places_bloc.dart';
 import 'package:places_surf/features/search/domain/repositories/i_search_repository.dart';
+import 'package:places_surf/features/settings/bloc/settings_bloc.dart';
+import 'package:places_surf/features/settings/domain/repositories/i_settings_repository.dart';
 import 'package:places_surf/router/app_router.dart';
 import 'package:places_surf/uikit/themes/app_theme_data.dart';
 
@@ -59,11 +61,32 @@ class App extends StatelessWidget {
                   SearchPlacesBloc(getIt<ISearchRepository>())
                     ..add(FetchAllExSearchQuery()),
         ),
+        BlocProvider<SettingsBloc>(
+          create:
+              (context) =>
+                  SettingsBloc(getIt<ISettingsRepository>())
+                    ..add(FetchSettings()),
+        ),
       ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        theme: AppThemeData.lightTheme,
-        routerConfig: appRouter.config(),
+      child: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
+          if (state is SettingsLoaded) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme:
+                  state.settings.isDark
+                      ? AppThemeData.darkTheme
+                      : AppThemeData.lightTheme,
+              routerConfig: appRouter.config(),
+            );
+          }
+
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            theme: AppThemeData.lightTheme,
+            routerConfig: appRouter.config(),
+          );
+        },
       ),
     );
   }

@@ -37,7 +37,7 @@ class PlaceCardWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             // borderRadius: BorderRadius.all(Radius.circular(12)),
-            color: colorTheme.background,
+            color: colorTheme.surface,
           ),
           child: Column(
             children: [
@@ -113,9 +113,11 @@ class PlaceCardWidget extends StatelessWidget {
                 height: 102.h,
                 width: double.infinity,
                 padding: EdgeInsets.all(16.r),
+                color: colorTheme.surface,
 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
                     Text(
                       place.name,
@@ -129,7 +131,9 @@ class PlaceCardWidget extends StatelessWidget {
                       softWrap: true,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: textTheme.text,
+                      style: textTheme.text.copyWith(
+                        color: colorTheme.textPrimary,
+                      ),
                     ),
                   ],
                 ),
