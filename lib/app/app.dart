@@ -10,6 +10,8 @@ import 'package:places_surf/features/map/domain/repositories/i_map_repository.da
 import 'package:places_surf/features/places/bloc_categories/categories_bloc.dart';
 import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
 import 'package:places_surf/features/places/domain/repositories/i_categories_repository.dart';
+import 'package:places_surf/features/search/bloc/search_places_bloc.dart';
+import 'package:places_surf/features/search/domain/repositories/i_search_repository.dart';
 import 'package:places_surf/router/app_router.dart';
 import 'package:places_surf/uikit/themes/app_theme_data.dart';
 
@@ -27,7 +29,6 @@ class App extends StatelessWidget {
               (context) => PlacesBloc(
                 getIt<IPlacesRepository>(),
                 getIt<ISavedPlacesRepository>(),
-                getIt<ICategoriesRepository>(),
               )..add(FetchPlacesEvent()),
         ),
         BlocProvider<FavoritePlacesBloc>(
@@ -51,6 +52,12 @@ class App extends StatelessWidget {
               (context) =>
                   CategoriesBloc(getIt<ICategoriesRepository>())
                     ..add(ResetFilters()),
+        ),
+        BlocProvider<SearchPlacesBloc>(
+          create:
+              (context) =>
+                  SearchPlacesBloc(getIt<ISearchRepository>())
+                    ..add(FetchAllExSearchQuery()),
         ),
       ],
       child: MaterialApp.router(

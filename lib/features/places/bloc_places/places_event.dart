@@ -7,18 +7,6 @@ class FetchPlacesEvent extends PlacesEvent {}
 
 class ResetPlacesEvent extends PlacesEvent {}
 
-class SearchQueryChanged extends PlacesEvent {
-  final SearchPlaceQuery query;
-
-  SearchQueryChanged(this.query);
-}
-
-class _SearchResultsReceived extends PlacesEvent {
-  final List<Place> places;
-
-  _SearchResultsReceived(this.places);
-}
-
 class ToggleFavoritePlace extends PlacesEvent {
   final Place place;
 

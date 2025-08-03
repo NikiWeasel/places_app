@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
+import 'package:places_surf/common/data/api_db/local_places_database.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/entities/place_images.dart';
-import 'package:places_surf/features/favorites/data/api/local_places_database.dart';
-import 'package:places_surf/features/favorites/domain/services/i_local_places_database_service.dart';
+import 'package:places_surf/common/domain/services/i_local_places_database_service.dart';
 import 'package:pool/pool.dart';
 
-class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
+class DriftPlacesDAO implements ILocalPlacesDatabaseService {
   final LocalPlacesDatabase _db;
   final Dio _dio;
   final _pool = Pool(5, timeout: Duration(seconds: 30));
 
-  DriftFavoritesDAO({required LocalPlacesDatabase db, required Dio dio})
+  DriftPlacesDAO({required LocalPlacesDatabase db, required Dio dio})
     : _db = db,
       _dio = dio;
 
@@ -28,7 +28,7 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
       final imageCompanion = await _downloadSingleImage(place.id, url);
       if (imageCompanion != null) {
         try {
-          await _db.into(_db.placeImages).insert(imageCompanion);
+          await _db.into(_db.placeImagesTable).insert(imageCompanion);
         } catch (e) {
           print('Ошибка вставки изображения $url: $e');
         }
@@ -51,7 +51,7 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
   Future<void> deletePlace(int placeId) async {
     await _db.transaction(() async {
       // Удаление связанных изображений
-      await (_db.delete(_db.placeImages)
+      await (_db.delete(_db.placeImagesTable)
         ..where((tbl) => tbl.placeId.equals(placeId))).go();
 
       // Удаление самого места
@@ -70,7 +70,7 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
 
     for (final placeRow in placeRows) {
       final imageRows =
-          await (_db.select(_db.placeImages)
+          await (_db.select(_db.placeImagesTable)
             ..where((img) => img.placeId.equals(placeRow.id))).get();
 
       result.add(
@@ -100,7 +100,7 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
 
     for (final placeRow in placeRows) {
       final imageRows =
-          await (_db.select(_db.placeImages)
+          await (_db.select(_db.placeImagesTable)
             ..where((img) => img.placeId.equals(placeRow.id))).get();
 
       result.add(
@@ -134,7 +134,7 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
 
       for (final placeRow in placeRows) {
         final imageRows =
-            await (_db.select(_db.placeImages)
+            await (_db.select(_db.placeImagesTable)
               ..where((tbl) => tbl.placeId.equals(placeRow.id))).get();
 
         placesWithImages.add(
@@ -172,7 +172,7 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
     if (placeRow == null) return null;
 
     final imageRows =
-        await (_db.select(_db.placeImages)
+        await (_db.select(_db.placeImagesTable)
           ..where((tbl) => tbl.placeId.equals(id))).get();
 
     return Place(
@@ -223,14 +223,13 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
       batch.insertAllOnConflictUpdate(_db.placeTable, placeCompanions);
     });
 
-    List<PlaceImagesCompanion> imagesToInsert = await _downloadAndPrepareImages(
-      places,
-    );
+    List<PlaceImagesTableCompanion> imagesToInsert =
+        await _downloadAndPrepareImages(places);
 
     if (imagesToInsert.isNotEmpty) {
       await _db.batch((batch) {
         batch.insertAll(
-          _db.placeImages,
+          _db.placeImagesTable,
           imagesToInsert,
           mode: InsertMode.insertOrReplace,
         );
@@ -238,10 +237,10 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
     }
   }
 
-  Future<List<PlaceImagesCompanion>> _downloadAndPrepareImages(
+  Future<List<PlaceImagesTableCompanion>> _downloadAndPrepareImages(
     List<Place> places,
   ) async {
-    final List<Future<PlaceImagesCompanion?>> futures = [];
+    final List<Future<PlaceImagesTableCompanion?>> futures = [];
 
     for (final place in places) {
       final placeId = place.id;
@@ -258,10 +257,10 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
     final results = await Future.wait(futures);
 
     // Отфильтровать неудачные загрузки
-    return results.whereType<PlaceImagesCompanion>().toList();
+    return results.whereType<PlaceImagesTableCompanion>().toList();
   }
 
-  Future<PlaceImagesCompanion?> _downloadSingleImage(
+  Future<PlaceImagesTableCompanion?> _downloadSingleImage(
     int placeId,
     String url, {
     int retries = 2,
@@ -274,7 +273,7 @@ class DriftFavoritesDAO implements ILocalPlacesDatabaseService {
         );
 
         if (response.statusCode == 200 && response.data != null) {
-          return PlaceImagesCompanion(
+          return PlaceImagesTableCompanion(
             placeId: Value(placeId),
             image: Value(response.data!),
             sourceUrl: Value(url),

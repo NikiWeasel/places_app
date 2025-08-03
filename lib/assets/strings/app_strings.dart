@@ -40,6 +40,13 @@ abstract class AppStrings {
   static const filterScreenKM = 'км';
   static const filterScreenShowButton = 'ПОКАЗАТЬ';
 
+  /// Поиск
+  static const searchScreenEmptyTitle = 'Ничего не найдено.';
+  static const searchScreenEmptySubTitle =
+      'Попробуйте изменить параметры\nпоиска';
+  static const searchScreenExSearchStrings = 'ВЫ ИСКАЛИ';
+  static const searchScreenEmptyClearExSearchStrings = 'Очистить историю';
+
   /// Пустой экран
   static const placesEmptyScreen = 'Пока пусто';
   static const placesScreenRefresh = 'Обновить';

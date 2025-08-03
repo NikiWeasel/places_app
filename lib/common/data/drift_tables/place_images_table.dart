@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:places_surf/features/favorites/data/dto/place_table.dart';
+import 'package:places_surf/common/data/drift_tables/place_table.dart';
 
-class PlaceImages extends Table {
+class PlaceImagesTable extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   // Внешний ключ

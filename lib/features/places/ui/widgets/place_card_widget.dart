@@ -33,7 +33,7 @@ class PlaceCardWidget extends StatelessWidget {
     return InkWell(
       onTap: pushDetailsScreen,
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderRadius: BorderRadius.all(Radius.circular(12.r)),
         child: Container(
           decoration: BoxDecoration(
             // borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -68,9 +68,6 @@ class PlaceCardWidget extends StatelessWidget {
                         }
                       },
                     ),
-
-                    // if (place.images.isNotEmpty)
-                    //   Image.network(fit: BoxFit.cover, place.images.first),
                     Positioned(
                       left: 16,
                       top: 16,

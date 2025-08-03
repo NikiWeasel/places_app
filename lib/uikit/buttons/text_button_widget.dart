@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
 
@@ -41,8 +42,8 @@ class TextButtonWidget extends StatelessWidget {
       style: TextButton.styleFrom(
         foregroundColor: color ?? colorTheme.accent,
         textStyle: textTheme.text,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12.r)),
         ),
       ),
       child:

@@ -1,9 +1,9 @@
+import 'package:places_surf/common/data/data_sources/drift_favorites_dao.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
-import 'package:places_surf/features/favorites/data/data_sources/drift_favorites_dao.dart';
 import 'package:places_surf/features/favorites/domain/repositories/i_saved_places_repository.dart';
 
 class SavedPlacesRepository implements ISavedPlacesRepository {
-  final DriftFavoritesDAO driftFavoritesDAO;
+  final DriftPlacesDAO driftFavoritesDAO;
 
   SavedPlacesRepository(this.driftFavoritesDAO);
 

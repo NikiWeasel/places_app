@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/uikit/buttons/entity/button_state.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/text/app_text_theme.dart';
@@ -53,7 +54,7 @@ class MainButton extends StatelessWidget {
         fixedSize: WidgetStatePropertyAll(Size.fromHeight(48)),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
+            borderRadius: BorderRadius.all(Radius.circular(12.r)),
           ),
         ),
         splashFactory: NoSplash.splashFactory,

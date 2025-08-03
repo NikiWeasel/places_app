@@ -19,7 +19,7 @@ class DismissContainer extends StatelessWidget {
       height: 198.h,
       decoration: BoxDecoration(
         color: colorTheme.error,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       child: Align(
         alignment: Alignment.centerRight,

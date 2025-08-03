@@ -1,13 +1,11 @@
-import 'package:places_surf/common/data/dto/search/query/search_place_query_dto.dart';
+import 'package:places_surf/common/data/data_sources/drift_favorites_dao.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
-import 'package:places_surf/common/domain/entities/search_place_query.dart';
 import 'package:places_surf/common/domain/repositories/i_places_repository.dart';
-import 'package:places_surf/features/favorites/data/data_sources/drift_favorites_dao.dart';
 import 'package:places_surf/features/places/data/api/rest_client.dart';
 
 class PlacesRepository implements IPlacesRepository {
   final RestClient _restClient;
-  final DriftFavoritesDAO _driftFavoritesDAO;
+  final DriftPlacesDAO _driftFavoritesDAO;
 
   PlacesRepository(this._restClient, this._driftFavoritesDAO);
 
@@ -34,27 +32,6 @@ class PlacesRepository implements IPlacesRepository {
               ),
             )
             .toList();
-    return entities;
-  }
-
-  @override
-  Future<List<Place>> getPlacesBySearch(SearchPlaceQuery searchPlace) async {
-    final searchPlaceDTO = SearchPlaceQueryDTO.fromEntity(searchPlace);
-    final localPlaces = await _driftFavoritesDAO.getAllPlaces();
-
-    final placeSearchResponseDTO = await _restClient.getPlacesBySearch(
-      searchPlaceDTO.toJson(),
-    );
-    final placesDTO = placeSearchResponseDTO.getResultDTOs();
-    List<Place> entities =
-        placesDTO
-            .map(
-              (e) => e.toEntity(
-                localPlaces.any((localPlace) => localPlace.id == e.id),
-              ),
-            )
-            .toList();
-
     return entities;
   }
 
