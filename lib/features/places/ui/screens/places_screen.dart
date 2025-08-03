@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/assets/images/app_svg_icons.dart';
@@ -16,6 +17,7 @@ import 'package:places_surf/router/app_router.gr.dart';
 import 'package:places_surf/uikit/buttons/icon_action_button.dart';
 import 'package:places_surf/uikit/images/svg_picture_widget.dart';
 import 'package:places_surf/uikit/loading/large_progress_indicator.dart';
+import 'package:places_surf/uikit/themes/app_theme_data.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
 import 'package:places_surf/uikit/themes/input/app_text_field.dart';
 
@@ -101,6 +103,19 @@ class _PlacesScreenState extends State<PlacesScreen> {
       context.read<SearchPlacesBloc>().add(SearchQueryChanged(sp));
     }
 
+    changeSystemUIColor() {
+      final color1 = AppThemeData.darkTheme.scaffoldBackgroundColor;
+      final color2 = AppThemeData.lightTheme.scaffoldBackgroundColor;
+      final brightness = Theme.of(context).brightness;
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          systemNavigationBarColor:
+              brightness == Brightness.light ? color1 : color2,
+          systemNavigationBarIconBrightness: brightness,
+        ),
+      );
+    }
+
     return MultiBlocListener(
       listeners: [
         BlocListener<SearchPlacesBloc, SearchPlacesState>(
@@ -117,11 +132,13 @@ class _PlacesScreenState extends State<PlacesScreen> {
           },
         ),
         BlocListener<SettingsBloc, SettingsState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is SettingsLoaded &&
                 !state.settings.didFinishOnboarding) {
               context.pushRoute(OnboardingRoute());
             }
+            // await Future.delayed(Duration(milliseconds: 1000));
+            changeSystemUIColor();
           },
         ),
       ],

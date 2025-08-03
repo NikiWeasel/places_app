@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:places_surf/uikit/images/svg_picture_widget.dart';
 import 'package:places_surf/uikit/themes/colors/app_color_theme.dart';
@@ -21,18 +21,18 @@ class PageWidget extends StatelessWidget {
     final appTextTheme = AppTextTheme.of(context);
     final appColorTheme = AppColorTheme.of(context);
 
+    final color =
+        Theme.of(context).brightness == Brightness.light
+            ? Colors.black
+            : appColorTheme.icon;
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
 
       children: [
-        SvgPictureWidget(
-          svgPath,
-          height: 104.r,
-          width: 104.r,
-          color: appColorTheme.icon,
-        ),
+        SvgPictureWidget(svgPath, height: 104.r, width: 104.r, color: color),
         SizedBox(height: 40.h),
         Text(title, style: appTextTheme.title, textAlign: TextAlign.center),
         SizedBox(height: 8.h),

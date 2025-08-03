@@ -38,6 +38,7 @@ abstract class AppSvgIcons {
   static const icDelete = 'assets/icons/delete.svg';
   static const icClear = 'assets/icons/clear.svg';
   static const icBucket = 'assets/icons/bucket.svg';
+  static const icGeolocation = 'assets/icons/geolocation.svg';
 
   /// пустые страницы (результат не найден) и ошибки
   static const icEmptyPlanned = 'assets/icons/error_card.svg';

@@ -30,11 +30,14 @@ abstract class IMapService {
   /// Размещает иконки интереса (POI) на карте
   Future<void> placeDestinationIcon(Point position);
 
-  /// Размещает иконки интереса (POI) на карте
+  /// Размещает иконки интереса (POI) на карте (кликабельные)
   Future<void> placeInteractiveDestinationIcon(
     Point position, {
     required void Function(Point point) callback,
   });
+
+  /// Размещает иконку пользователя на карте
+  Future<void> placeUserIcon(Point position);
 
   /// Укорачивает отображаемую полилинию маршрута до [fromPosition]
   Future<void> trimRouteFrom(Point fromPosition);

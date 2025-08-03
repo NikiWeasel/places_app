@@ -32,6 +32,11 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
   Widget build(BuildContext context) {
     final colorTheme = AppColorTheme.of(context);
 
+    final color =
+        Theme.of(context).brightness == Brightness.light
+            ? Colors.black
+            : colorTheme.icon;
+
     void openMap() {
       context.navigateTo(
         MapRoute(
@@ -107,7 +112,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                         },
                         icon: SvgPictureWidget(
                           AppSvgIcons.icShare,
-                          color: colorTheme.icon,
+                          color: color,
                         ),
                       ),
                     ),
@@ -119,13 +124,13 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                             widget.place.isFavorite
                                 ? AppStrings.placeDetailsInFavoritesButton
                                 : AppStrings.placeDetailsFavoritesButton,
-                        color: colorTheme.textPrimary,
+                        color: color,
                         onPressed: toFavorites,
                         icon: SvgPictureWidget(
                           widget.place.isFavorite
                               ? AppSvgIcons.icHeartFull
                               : AppSvgIcons.icHeart,
-                          color: colorTheme.icon,
+                          color: color,
                         ),
                       ),
                     ),

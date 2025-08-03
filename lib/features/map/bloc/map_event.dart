@@ -17,6 +17,10 @@ class BuildPointsMapEvent extends MapEvent {
 
 class ToDefaultPointMapEvent extends MapEvent {}
 
+class SubscribeToUser extends MapEvent {}
+
+// class LocationUpdated extends MapEvent {}
+
 class PlaceSelectedByMap extends MapEvent {
   final Point selectedPoint;
 

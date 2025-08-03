@@ -11,4 +11,8 @@ abstract interface class IMapRepository {
     List<Point> points,
     void Function(Point point) callback,
   );
+
+  Future<void> buildUserIcon(Point point);
+
+  Stream<Point> positionStream();
 }

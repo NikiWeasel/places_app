@@ -7,12 +7,13 @@ import 'package:places_surf/assets/images/app_svg_icons.dart';
 import 'package:places_surf/assets/strings/app_strings.dart';
 import 'package:places_surf/common/domain/entities/place.dart';
 import 'package:places_surf/common/domain/entities/search_place_query.dart';
+import 'package:places_surf/common/ui/widgets/empty_screen_widget.dart';
 import 'package:places_surf/common/ui/widgets/error_screen_widget.dart';
 import 'package:places_surf/features/map/bloc/map_bloc.dart';
 import 'package:places_surf/features/map/data/services/map_service.dart';
 import 'package:places_surf/features/places/bloc_places/places_bloc.dart';
-import 'package:places_surf/features/places/ui/widgets/place_card_widget.dart';
 import 'package:places_surf/features/search/bloc/search_places_bloc.dart';
+import 'package:places_surf/features/search/ui/widgets/search_places_content.dart';
 import 'package:places_surf/router/app_router.gr.dart';
 import 'package:places_surf/uikit/buttons/icon_action_button.dart';
 import 'package:places_surf/uikit/images/svg_picture_widget.dart';
@@ -47,6 +48,8 @@ class _MapScreenState extends State<MapScreen> {
   late FocusNode focusNode;
   late TextEditingController _controller;
   bool showCategories = true;
+
+  bool wasMapInited = false;
 
   @override
   void initState() {
@@ -140,6 +143,11 @@ class _MapScreenState extends State<MapScreen> {
     final appTextTheme = AppTextTheme.of(context);
     final appColorTheme = AppColorTheme.of(context);
 
+    final color =
+        Theme.of(context).brightness == Brightness.light
+            ? Colors.black
+            : appColorTheme.icon;
+
     final double screenHeight = MediaQuery.of(context).size.height;
 
     void openFiltersScreen() {
@@ -160,6 +168,7 @@ class _MapScreenState extends State<MapScreen> {
         setState(() {
           FocusScope.of(context).unfocus();
         });
+        _startMapkit();
         return;
       }
       _controller.clear();
@@ -199,114 +208,143 @@ class _MapScreenState extends State<MapScreen> {
           },
         ),
       ],
-      child: BlocBuilder<MapBloc, MapState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Center(
-                child: Text(
-                  AppStrings.placesScreenBottomNavMap,
-                  // style: appTextTheme.subtitle,
-                ),
-              ),
-            ),
-            body: SizedBox(
-              height: screenHeight,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.r,
-                      vertical: 6.r,
-                    ),
-                    child: AppTextField(
-                      controller: _controller,
-                      focusNode: focusNode,
-                      onChanged: onChanged,
-                      hintText: AppStrings.searchBar,
-                      prefixIcon: SvgPictureWidget(
-                        AppSvgIcons.icSearch,
-                        color: appColorTheme.inactive,
-                        fit: BoxFit.scaleDown,
-                        width: 24.w,
-                        height: 24.h,
-                      ),
-                      suffixIcon:
-                          showCategories
-                              ? IconActionButton(
-                                onPressed: openFiltersScreen,
-                                color: appColorTheme.accent,
-                                svgPath: AppSvgIcons.icFilter,
-                              )
-                              : IconActionButton(
-                                onPressed: clearTextField,
-                                svgPath: AppSvgIcons.icClear,
-                                color: appColorTheme.textPrimary,
-                              ),
+      child: BlocBuilder<PlacesBloc, PlacesState>(
+        builder: (context, placesState) {
+          return BlocBuilder<MapBloc, MapState>(
+            builder: (context, state) {
+              if (placesState is ErrorPlacesState || state is MapError) {
+                return Center(child: ErrorScreenWidget());
+              }
+              if (placesState is! LoadedPlacesState) {
+                return Center(child: LargeProgressIndicator());
+              }
+              return Scaffold(
+                appBar: AppBar(
+                  title: Center(
+                    child: Text(
+                      AppStrings.placesScreenBottomNavMap,
+                      // style: appTextTheme.subtitle,
                     ),
                   ),
-                  switch (state) {
-                    MapInitial() => Center(child: LargeProgressIndicator()),
-                    MapLoading() => Center(child: LargeProgressIndicator()),
-                    MapLoaded() => Expanded(
-                      child: Stack(
-                        children: [
-                          YandexMap(
-                            onMapCreated: (mapWindow) {
-                              final controller = getIt<MapService>();
-                              controller.init(mapWindow);
-
-                              // mapDeps = MapDepsScope(
-                              //   window,
-                              //   navigationHolder.navigation,
-                              //   locationManager,
-                              // );
-
-                              _userLocationLayer =
-                                  mapkit.createUserLocationLayer(mapWindow)
-                                    ..headingModeActive = true
-                                    ..setVisible(true);
-
-                              // mapkit.create
-
-                              // _userLocationLayer.
-                            },
+                ),
+                body: SizedBox(
+                  height: screenHeight,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.r,
+                          vertical: 6.r,
+                        ),
+                        child: AppTextField(
+                          controller: _controller,
+                          focusNode: focusNode,
+                          onChanged: onChanged,
+                          hintText: AppStrings.searchBar,
+                          prefixIcon: SvgPictureWidget(
+                            AppSvgIcons.icSearch,
+                            color: appColorTheme.inactive,
+                            fit: BoxFit.scaleDown,
+                            width: 24.w,
+                            height: 24.h,
                           ),
-                          BlocBuilder<PlacesBloc, PlacesState>(
-                            builder: (context, placesState) {
-                              if (state.selectedPoint != null &&
-                                  placesState is LoadedPlacesState) {
-                                return Positioned(
-                                  child: PlaceCardWidget(
-                                    place: getPlaceByPoint(
-                                      state.selectedPoint!,
-                                      placesState.places,
-                                    ),
+                          suffixIcon:
+                              showCategories
+                                  ? IconActionButton(
+                                    onPressed: openFiltersScreen,
+                                    color: appColorTheme.accent,
+                                    svgPath: AppSvgIcons.icFilter,
+                                  )
+                                  : IconActionButton(
+                                    onPressed: clearTextField,
+                                    svgPath: AppSvgIcons.icClear,
+                                    color: appColorTheme.textPrimary,
                                   ),
-                                );
-                              }
-                              return SizedBox();
-                            },
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    MapError() => ErrorScreenWidget(),
+                      switch (state) {
+                        MapInitial() => Center(child: LargeProgressIndicator()),
+                        MapLoading() => Center(child: LargeProgressIndicator()),
+                        MapLoaded() => Builder(
+                          builder: (context) {
+                            if (placesState.places.isNotEmpty) {
+                              if (focusNode.hasFocus ||
+                                  _controller.text.isNotEmpty) {
+                                return SearchPlacesContent();
+                              }
+                              return Expanded(
+                                child: Stack(
+                                  children: [
+                                    YandexMap(
+                                      onMapCreated: (mapWindow) {
+                                        if (!wasMapInited) {
+                                          final controller =
+                                              getIt<MapService>();
+                                          controller.init(mapWindow);
+
+                                          // _userLocationLayer =
+                                          //     mapkit.createUserLocationLayer(
+                                          //         mapWindow,
+                                          //       )
+                                          //       ..headingModeActive = true
+                                          //       ..setVisible(false);
+                                          wasMapInited = true;
+                                        }
+
+                                        // mapkit.create
+
+                                        // _userLocationLayer.
+                                      },
+                                    ),
+                                    // Positioned(
+                                    //   child: PlaceCardWidget(
+                                    //     place: getPlaceByPoint(
+                                    //       state.selectedPoint,
+                                    //       placesState.places,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return SizedBox(
+                                height: screenHeight - 220.h,
+                                child: EmptyScreenWidget(onRefresh: () {}),
+                              );
+                            }
+                          },
+                        ),
+                        MapError() => ErrorScreenWidget(),
+                      },
+                    ],
+                  ),
+                ),
+                floatingActionButton: FloatingActionButton(
+                  shape: const CircleBorder(),
+                  backgroundColor:
+                      Theme.of(context).brightness == Brightness.light
+                          ? Colors.white
+                          : appColorTheme.secondary,
+                  child: SvgPictureWidget(
+                    AppSvgIcons.icGeolocation,
+                    height: 32.r,
+                    width: 32.r,
+                    color: color,
+                  ),
+                  onPressed: () {
+                    context.read<MapBloc>().add(ToDefaultPointMapEvent());
+                    // if (widget.point != null) {
+                    //   context.read<MapBloc>().add(
+                    //     BuildNewRouteMapEvent(widget.point!),
+                    //   );
+                    // } else {
+                    //   context.read<MapBloc>().add(ToDefaultPointMapEvent());
+                    // }
                   },
-                ],
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                // if (widget.point != null) {
-                //   context.read<MapBloc>().add(
-                //     BuildNewRouteMapEvent(widget.point!),
-                //   );
-                // } else {
-                //   context.read<MapBloc>().add(ToDefaultPointMapEvent());
-                // }
-              },
-            ),
+                ),
+              );
+            },
           );
         },
       ),

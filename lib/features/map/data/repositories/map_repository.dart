@@ -12,7 +12,7 @@ class MapRepository implements IMapRepository {
 
   @override
   Future<void> toDefaultLocation() async {
-    await mapService.clearMapObjects();
+    // await mapService.clearMapObjects();
 
     final point = await geolocationService.getCurrentPosition();
     mapService.animateCameraTo(point);
@@ -52,5 +52,16 @@ class MapRepository implements IMapRepository {
       // await mapService.placeDestinationIcon(position);
     }
     // await mapService.placeDestinationIcon(points[points.length - 1]);
+  }
+
+  @override
+  Stream<Point> positionStream() {
+    return geolocationService.positionStream();
+  }
+
+  @override
+  Future<void> buildUserIcon(Point point) async {
+    print(point);
+    mapService.placeUserIcon(point);
   }
 }

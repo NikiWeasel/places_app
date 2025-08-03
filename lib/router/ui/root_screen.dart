@@ -27,9 +27,11 @@ class RootScreen extends StatelessWidget {
                 : colorTheme.icon;
 
         return BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          // fixedColor: colorTheme.textPrimary,
+          backgroundColor: colorTheme.scaffold,
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
           items: [

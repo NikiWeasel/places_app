@@ -12,6 +12,8 @@ import 'package:yandex_maps_mapkit/src/mapkit/animation.dart'
 class MapService implements IMapService {
   MapWindow? mapWindow;
 
+  PlacemarkMapObject? _userPlacemark;
+
   MapService(this.mapWindow);
 
   void init(MapWindow newMapWindow) {
@@ -98,6 +100,28 @@ class MapService implements IMapService {
           },
         ),
       );
+  }
+
+  @override
+  Future<void> placeUserIcon(Point position) async {
+    mapWindow?.map.mapObjects;
+    final destinationIconImageProvider = image_provider
+        .ImageProvider.fromImageProvider(
+      const AssetImage("assets/images/user.png"),
+    );
+
+    await removeUserIcon();
+
+    mapWindow?.map.mapObjects.addPlacemark()
+      ?..geometry = position
+      ..setIcon(destinationIconImageProvider);
+  }
+
+  Future<void> removeUserIcon() async {
+    if (_userPlacemark != null) {
+      mapWindow?.map.mapObjects.remove(_userPlacemark!);
+      _userPlacemark = null;
+    }
   }
 
   @override
